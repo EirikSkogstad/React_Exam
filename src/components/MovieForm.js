@@ -4,7 +4,7 @@ import "./movie_form.css";
 class MovieForm extends Component {
   render() {
     return (
-      <div className="movie-form-wrapper container-fluid">
+      <div className="movie-form-wrapper">
         <form>
           <label htmlFor="input1">
             Title:
@@ -16,7 +16,7 @@ class MovieForm extends Component {
           </label>
           <label htmlFor="input3">
             Description:
-            <input type="text" id="input3" />
+            <textarea type="textbox" id="input3" />
           </label>
 
           <button>Submit</button>

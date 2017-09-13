@@ -103,13 +103,14 @@ fabric.properties
 # End of https://www.gitignore.io/api/intellij,webstorm
 
 # dependencies
-/node_modules
+_frontend/node_modules
+_backend/node_modules
 
 # testing
-/coverage
+_frontend/coverage
 
 # production
-/build
+_frontend/build
 
 # misc
 .DS_Store

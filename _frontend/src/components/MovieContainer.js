@@ -7,7 +7,7 @@ class MovieContainer extends Component {
     super();
     this.state = {
       movies: [],
-      restUrl: "http://localhost:9000/movies"
+      restUrl: "http://localhost:1234/movies"
     };
   }
 
@@ -22,7 +22,7 @@ class MovieContainer extends Component {
   render() {
     return (
       <div className="movie-container-wrapper container">
-        {this.renderMovies()}
+        <div className="row">{this.renderMovies()}</div>
       </div>
     );
   }
@@ -30,12 +30,10 @@ class MovieContainer extends Component {
   renderMovies() {
     if (this.state.movies.length > 0) {
       console.log(this.state.movies);
-      return this.state.movies.map(movieJSON => {
+      return this.state.movies.map((movieJSON, key) => {
         return (
-          <div className="row">
-            <div className="col-xl-6 col-md-12">
-              <MovieItem movie={movieJSON} />
-            </div>
+          <div className="col-xl-6 col-md-12">
+            <MovieItem key={key} movie={movieJSON} />
           </div>
         );
       });

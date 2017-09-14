@@ -7,9 +7,9 @@ class MovieForm extends Component {
     this.state = {
       maxYear: new Date().getFullYear(),
       minYear: 1800,
-      Title: "",
-      Year: "",
-      Description: ""
+      title: "",
+      year: 0,
+      description: ""
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,7 +24,7 @@ class MovieForm extends Component {
             <input
               onChange={this.handleInputChange}
               type="text"
-              name="Title"
+              name="title"
               id="titleInput"
               required
             />
@@ -34,7 +34,7 @@ class MovieForm extends Component {
             <input
               onChange={this.handleInputChange}
               type="number"
-              name="Year"
+              name="year"
               min={this.state.minYear}
               max={this.state.maxYear}
               id="yearInput"
@@ -46,7 +46,7 @@ class MovieForm extends Component {
             <textarea
               onChange={this.handleInputChange}
               type="textbox"
-              name="Description"
+              name="description"
               id="descriptionInput"
               required
             />
@@ -58,9 +58,12 @@ class MovieForm extends Component {
   }
 
   handleInputChange(event) {
-    const value = event.target.value;
+    let value = event.target.value;
     const name = event.target.name;
 
+    if (event.target.name === "year") {
+      value = parseInt(value, 10);
+    }
     this.setState({
       [name]: value
     });
@@ -70,7 +73,18 @@ class MovieForm extends Component {
     event.preventDefault();
 
     if (this.isFormFilled()) {
-      alert("Sending form!");
+      fetch("http://localhost:1234/movies", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title: this.state.title,
+          year: this.state.year,
+          description: this.state.description
+        })
+      });
     } else {
       alert("Form is not filled properly out!");
     }
@@ -79,21 +93,21 @@ class MovieForm extends Component {
   }
 
   isFormFilled() {
-    if (this.state.Title === "") {
+    if (this.state.title === "") {
       return false;
     }
-    if (this.state.Year === "") {
+    if (this.state.year === 0) {
       return false;
     }
-    return this.state.Description !== "";
+    return this.state.description !== "";
   }
 
   resetForm() {
     this.formRef.reset();
     this.setState({
-      Title: "",
-      Year: "",
-      Description: ""
+      title: "",
+      year: 0,
+      description: ""
     });
   }
 }

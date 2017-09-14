@@ -84,7 +84,9 @@ class MovieForm extends Component {
           year: this.state.year,
           description: this.state.description
         })
-      });
+      })
+        .then(res => res.json())
+        .then(json => console.log(json));
     } else {
       alert("Form is not filled properly out!");
     }

@@ -10,8 +10,24 @@ Grunnen til at jeg la til disse funksjonalitene var mest for å bli komfortable 
 
 
 ### Fordeler og ulemper med en stack bygget kun av Javascript:
+
+##### Fordeler:
 - En stor fordel med "fullstack" Javascript er mengden biblioteker som ligger lett tilgjengelig. 
  Veldig mange problemer er allerede løst, og ligger tilgjengelig i små pakker NPM(Node Package Manager) repositoriet. 
 - I tilegg til biblioteker, så finnes det mange nyttige verktøy til utvikling av Javascript. 
   Kodekvalitets-verktøy som ESLint, JSlint, Prettier gjør det lettere å oppdage bugs og holde koden formatert på en konsekvent
   måte.
+
+- Samme språk. Samme utvikler kan jobbe med både back og frontend. 
+
+##### Ulemper 
+- Samme utvikler på begge sider, ikke nødvendigvis like god i backend som frontend. 
+- Node er ikke alltid like kjapt. 
+
+
+
+### Hva er et (web-)API, og hva er noen fordeler og ulemper ved å lage et? Når bør man ikke lage et API?
+Et web-API er et API som utviklere kan bruke til å få tak i eller sende data til "backend delen" av 
+en applikasjon(Som vanligvis lagres i en database).
+
+API- lar en utvikler enkelt bruke funksjonaliteten til en applikasjon/tjeneste. Eksempler kan være alt fra Google Maps, sende spørringer om vær i ulike lokasjoner.

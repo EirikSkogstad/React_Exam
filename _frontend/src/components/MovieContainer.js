@@ -7,117 +7,44 @@ class MovieContainer extends Component {
     constructor() {
         super();
         this.state = {
-            movie: {title: "Fish attacks", description: "There once was a fish that attacked", year: 2014}
+            movies: [],
+            restUrl: "http://localhost:9000/movies"
         };
+
+    }
+
+
+    componentWillMount() {
+        fetch(this.state.restUrl)
+            .then(response => response.json())
+            .then((data) => {
+                this.setState({movies: data})
+            });
     }
 
     render() {
-        return (
-            <div className="movie-container-wrapper container"> 
-                <div className="row">
+        return <div className="movie-container-wrapper container">
+            {this.renderMovies()}
+        </div>
+    }
+
+    renderMovies() {
+        if (this.state.movies.length > 0) {
+            console.log(this.state.movies);
+            return this.state.movies.map((movieJSON) => {
+                return <div className="row">
                     <div className="col-xl-6 col-md-12">
                         <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
-                        />
-                    </div>
-                    <div className="col-xl-6 col-md-12">
-                        <MovieItem
-                            movie={this.state.movie}
+                            movie={movieJSON}
                         />
                     </div>
                 </div>
-            </div>
-        );
+            })
+        }
+
+        else {
+            return <h3>No movies found!</h3>
+        }
     }
 }
 

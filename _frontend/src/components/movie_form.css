@@ -1,18 +1,17 @@
 .movie-form-wrapper form {
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+  padding: 2em;
+  margin: 2em;
 
-    text-align: center;
-    display: flex;
-    flex-flow: column;
-    padding: 2em;
-    margin: 2em;
-
-    background: lightblue;
-    border-radius: 5px;
+  background: lightblue;
+  border-radius: 5px;
 }
 
 .movie-form-wrapper form label {
-    display: flex;
-    flex-flow: column;
-    background: #b5deeb;
-    font-weight: bold;
+  display: flex;
+  flex-flow: column;
+  background: #b5deeb;
+  font-weight: bold;
 }

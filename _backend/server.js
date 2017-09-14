@@ -1,24 +1,25 @@
 // Imports:
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const app = express();
 
 const serverPort = 1234;
 const dbName = 'movies';
 
-// Mongoose config:
+app.use(bodyParser.json());
 mongoose.connect(`mongodb://localhost/${dbName}/`);
+
 const movieSchema = new mongoose.Schema({
     title: {type: String, required: true},
     date: {type: Date, required: true},
     description: {type: String, required: true}
 });
-const movieModel = mongoose.model('Movie', movieSchema);
-
+const MovieModel = mongoose.model('Movie', movieSchema);
 
 
 app.get('/movies', (req, res) => {
-    movieModel.find((result, err) => {
+    MovieModel.find((err, result) => {
         if (err) {
             res.send(err);
         }
@@ -26,6 +27,22 @@ app.get('/movies', (req, res) => {
             res.send(result);
         }
     });
+});
+
+app.post('/movies', (req, res) => {
+    const body = req.body;
+    const movie = new MovieModel(body);
+    // Validation???
+
+    movie.save((err, savedMovie) => {
+        if(err) {
+            res.send(err);
+        }
+        else {
+            res.send(savedMovie);
+        }
+    })
+
 });
 
 app.listen(serverPort, () => console.log(`Listening on port: ${serverPort}`));

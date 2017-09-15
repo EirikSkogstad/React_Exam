@@ -8,7 +8,7 @@ class MovieContainer extends Component {
     this.state = {
       movies: [],
       restUrl: "http://localhost:1234/movies",
-        movieFilter: ""
+      movieFilter: ""
     };
 
     this.onFilterChange = this.onFilterChange.bind(this);
@@ -27,7 +27,11 @@ class MovieContainer extends Component {
       <div className="movie-container-wrapper container">
         <div className="movie-filter-wrapper">
           <label for="movie-filter-input">Filter:</label>
-          <input id="movie-filter-input" type="text" onChange={this.onFilterChange}/>
+          <input
+            id="movie-filter-input"
+            type="text"
+            onChange={this.onFilterChange}
+          />
         </div>
         <div className="row">{this.renderMovies()}</div>
       </div>
@@ -35,7 +39,9 @@ class MovieContainer extends Component {
   }
 
   renderMovies() {
-    if (this.state.movies.length > 0) {
+    const movieFilter = this.state.movieFilter;
+
+    if (movieFilter === "") {
       return this.state.movies.map((movieJSON, key) => {
         return (
           <div className="col-xl-6 col-md-12">
@@ -44,13 +50,27 @@ class MovieContainer extends Component {
         );
       });
     } else {
-      return <h3>No movies found!</h3>;
+      return this.state.movies
+        .filter(movie => {
+          const searchString = movieFilter.toLowerCase();
+          const title = movie.title.toLowerCase();
+
+          //FIXME bug somewhere here, displays items that doesnt match search, instead of those that do.
+          return title.includes(searchString);
+        })
+        .map((movieJSON, key) => {
+          return (
+            <div className="col-xl-6 col-md-12">
+              <MovieItem key={key} movie={movieJSON} />
+            </div>
+          );
+        });
     }
   }
 
   onFilterChange(event) {
-      const name = event.target.value;
-      console.log(name);
+    this.setState({ movieFilter: event.target.value });
+    this.renderMovies();
   }
 }
 

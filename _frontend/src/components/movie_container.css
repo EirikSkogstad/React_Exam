@@ -12,10 +12,11 @@
 }
 
 .movie-filter-wrapper input {
-  width: 100%
+  width: 100%;
 }
 
 .movie-filter-wrapper label {
   flex-direction: column;
   font-weight: bold;
+  margin-right: 0.4 em;
 }

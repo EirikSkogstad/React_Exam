@@ -26,7 +26,7 @@ class TitleContainer extends Component {
   render() {
     return (
       <div className="title-container-wrapper">
-        <h1>Movie list</h1>
+        <h1>MovieList</h1>
         <h4>This page was coded by {this.state.currentAnimal}</h4>
 
         <button onClick={this.changeAnimal}>View other contributors..</button>

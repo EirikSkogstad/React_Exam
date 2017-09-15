@@ -7,8 +7,11 @@ class MovieContainer extends Component {
     super();
     this.state = {
       movies: [],
-      restUrl: "http://localhost:1234/movies"
+      restUrl: "http://localhost:1234/movies",
+        movieFilter: ""
     };
+
+    this.onFilterChange = this.onFilterChange.bind(this);
   }
 
   componentWillMount() {
@@ -22,6 +25,10 @@ class MovieContainer extends Component {
   render() {
     return (
       <div className="movie-container-wrapper container">
+        <div className="movie-filter-wrapper">
+          <label for="movie-filter-input">Filter:</label>
+          <input id="movie-filter-input" type="text" onChange={this.onFilterChange}/>
+        </div>
         <div className="row">{this.renderMovies()}</div>
       </div>
     );
@@ -29,7 +36,6 @@ class MovieContainer extends Component {
 
   renderMovies() {
     if (this.state.movies.length > 0) {
-      console.log(this.state.movies);
       return this.state.movies.map((movieJSON, key) => {
         return (
           <div className="col-xl-6 col-md-12">
@@ -40,6 +46,11 @@ class MovieContainer extends Component {
     } else {
       return <h3>No movies found!</h3>;
     }
+  }
+
+  onFilterChange(event) {
+      const name = event.target.value;
+      console.log(name);
   }
 }
 

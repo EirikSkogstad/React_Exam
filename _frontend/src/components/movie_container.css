@@ -3,3 +3,19 @@
   text-align: center;
   padding: 2em;
 }
+
+.movie-filter-wrapper {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+}
+
+.movie-filter-wrapper input {
+  width: 100%
+}
+
+.movie-filter-wrapper label {
+  flex-direction: column;
+  font-weight: bold;
+}

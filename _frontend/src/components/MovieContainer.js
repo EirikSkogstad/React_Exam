@@ -26,7 +26,7 @@ class MovieContainer extends Component {
     return (
       <div className="movie-container-wrapper container">
         <div className="movie-filter-wrapper">
-          <label for="movie-filter-input">Filter:</label>
+          <label htmlFor="movie-filter-input">Filter:</label>
           <input
             id="movie-filter-input"
             type="text"
@@ -40,32 +40,36 @@ class MovieContainer extends Component {
 
   renderMovies() {
     const movieFilter = this.state.movieFilter;
-
-    if (movieFilter === "") {
-      return this.state.movies.map((movieJSON, key) => {
-        return (
-          <div className="col-xl-6 col-md-12">
-            <MovieItem key={key} movie={movieJSON} />
-          </div>
-        );
-      });
-    } else {
-      return this.state.movies
-        .filter(movie => {
-          const searchString = movieFilter.toLowerCase();
-          const title = movie.title.toLowerCase();
-
-          //FIXME bug somewhere here, displays items that doesnt match search, instead of those that do.
-          return title.includes(searchString);
-        })
-        .map((movieJSON, key) => {
-          return (
-            <div className="col-xl-6 col-md-12">
-              <MovieItem key={key} movie={movieJSON} />
-            </div>
-          );
-        });
+    let matchingMovies = this.state.movies;
+    if (movieFilter !== "") {
+      matchingMovies = this.filterMovies(movieFilter);
     }
+
+    if (matchingMovies.length === 0) {
+      return (
+        <div className="col-xl-6 col-md-12">
+          <h3>Could not find any movies..</h3>
+        </div>
+      );
+    }
+
+    return matchingMovies.map((movie, key) => {
+      return (
+        <div className="col-xl-6 col-md-12">
+          <MovieItem key={key} movie={movie} />
+        </div>
+      );
+    });
+  }
+
+  filterMovies(movieFilter) {
+    return this.state.movies.filter(movie => {
+      const searchString = movieFilter.toLowerCase();
+      const title = movie.title.toLowerCase();
+
+      //FIXME bug somewhere here, displays items that doesnt match search, instead of those that do.
+      return title.includes(searchString);
+    });
   }
 
   onFilterChange(event) {

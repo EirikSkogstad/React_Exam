@@ -30,4 +30,17 @@ Grunnen til at jeg la til disse funksjonalitene var mest for å bli komfortable 
 Et web-API er et API som utviklere kan bruke til å få tak i eller sende data til "backend delen" av 
 en applikasjon(Som vanligvis lagres i en database).
 
-API- lar en utvikler enkelt bruke funksjonaliteten til en applikasjon/tjeneste. Eksempler kan være alt fra Google Maps, sende spørringer om vær i ulike lokasjoner.
+API- lar en utvikler enkelt bruke funksjonaliteten til en applikasjon/tjeneste. Eksempler kan være alt fra Google Maps,
+sende spørringer om vær i ulike lokasjoner.
+
+##### Fordeler:
+- Data kan være lett tilgjengelig for folk som har nytte av det. Værdata er et typisk eksempel på dette, hvor mange ulike tjenester
+kan ha nytte av dataen. Alt fra konserter, kollektivtransport og parker er tjenester hvor bruker kan ha stor nytte av å vite været.
+
+
+##### Ulemper:
+-
+
+Bør ikke lage hvis et API hvis man er avhengig av at folk bruker tjenesten din, istedenfor å lage en konkurerende tjeneste som
+tilbyr samme data. Et eksempel er Instagram, hvor det finnes mange tjenester som tilbyr samme data. Generelt så kan et
+API være en god ide hvis du produserer dataen, men ikke er like avhengig av å bruke den selv i din egen tjeneste.

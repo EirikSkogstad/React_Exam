@@ -1,6 +1,10 @@
-#Innlevering 01: "Hello world"
-For innlevering 01 har jeg valgt å lage en applikasjon som lister ulike filmer. Bruker skal ha muligheten til å legge til filmer, se ulike filmer som har blitt lagt til, filtrere filmer som er lagt til og kunne endre ulike filmer og til å endre.
-Grunnen til at jeg la til disse funksjonalitene var mest for å bli komfortable med bruk av ulike "HTTP verb" i JSON api'et.
+# Innlevering 01: "Hello world"
+For innlevering 01 valgte jeg å lage en applikasjon som lister ulike filmer. Brukeren skulle ha muligheten til å..
+- legge til filmer. 
+- se ulike filmer som har blitt lagt til. 
+- filtrere filmer som er lagt til
+- kunne endre filmer som allerede er lagt til.
+Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli komfortabel med bruk av ulike "HTTP-verb" i Express.
 
 ### Oppsett:
 - Prosjektet er del i to mapper: "frontend" og "backend". Grunnen er at dette vil gjøre det lettere å enkelt å separere de to "prosjektene". 
@@ -18,7 +22,9 @@ Grunnen til at jeg la til disse funksjonalitene var mest for å bli komfortable 
   Kodekvalitets-verktøy som ESLint, JSlint, Prettier gjør det lettere å oppdage bugs og holde koden formatert på en konsekvent
   måte.
 
-- Samme språk. Samme utvikler kan jobbe med både back og frontend. 
+- Samme språk gjør at en kan bruke samme utvikler på både server- og client-siden. 
+- I tillegg så kan dette brukes sammen med biblioteker 
+    som React-Native, slik at en kan gjenbruke nesten all koden til lage IOS og Android apper.
 
 ##### Ulemper 
 - Samme utvikler på begge sider, ikke nødvendigvis like god i backend som frontend. 
@@ -39,8 +45,7 @@ kan ha nytte av dataen. Alt fra konserter, kollektivtransport og parker er tjene
 
 
 ##### Ulemper:
--
-
-Bør ikke lage hvis et API hvis man er avhengig av at folk bruker tjenesten din, istedenfor å lage en konkurerende tjeneste som
-tilbyr samme data. Et eksempel er Instagram, hvor det finnes mange tjenester som tilbyr samme data. Generelt så kan et
-API være en god ide hvis du produserer dataen, men ikke er like avhengig av å bruke den selv i din egen tjeneste.
+- Bør ikke lage hvis et API hvis man er avhengig av at folk bruker tjenesten din, istedenfor å lage en konkurerende tjeneste som
+tilbyr samme data. Et eksempel er Instagram, hvor det finnes mange tjenester som tilbyr samme data. 
+- Generelt så kan et API være en god ide hvis du produserer dataen, men ikke er like avhengig av å bruke den selv i din egen tjeneste.
+ Værtjenester slik som Yr.no er et godt eksempel på dette.

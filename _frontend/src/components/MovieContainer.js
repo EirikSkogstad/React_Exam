@@ -47,7 +47,7 @@ class MovieContainer extends Component {
 
     if (matchingMovies.length === 0) {
       return (
-        <div className="col-xl-6 col-md-12">
+        <div className="col-12">
           <h3>Could not find any movies..</h3>
         </div>
       );

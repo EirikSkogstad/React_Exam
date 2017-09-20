@@ -6,6 +6,12 @@ For innlevering 01 valgte jeg å lage en applikasjon som lister ulike filmer. Br
 - kunne endre filmer som allerede er lagt til.
 Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli komfortabel med bruk av ulike "HTTP-verb" i Express.
 
+
+### Hvordan starte applikasjonen:
+- Pass på at mongodb kjører og at node er install. I tilegg trengs enten npm eller yarn.
+- Åpne to terminal vinduer og naviger til både _backend og _frontend mappene.
+- Kjør så <code>yarn install</code> eller <code>npm install</code>, i begge mappene.
+- Deretter kjør <code>yarn start</code> eller <code>npm start</code>, i begge mappene.
 ### Oppsett:
 - Prosjektet er del i to mapper: "frontend" og "backend". Grunnen er at dette vil gjøre det lettere å enkelt å separere de to "prosjektene". 
 - Dette kunne og også vært løst med to ulike Git repositories, men når jeg kun er en utvikler og prosjektet er såpass lite, så ville det bare gjort ting vanskeligere.) 

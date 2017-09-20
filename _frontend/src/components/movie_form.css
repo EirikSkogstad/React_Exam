@@ -3,10 +3,10 @@
   display: flex;
   flex-flow: column;
   padding: 2em;
-  margin: 2em;
+  margin-top: 2em;
 
   background: lightblue;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .movie-form-wrapper form label {

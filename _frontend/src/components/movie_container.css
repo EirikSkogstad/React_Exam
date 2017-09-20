@@ -2,6 +2,8 @@
   background: lightblue;
   text-align: center;
   padding: 2em;
+  border-radius: 10px;
+  margin-top: 2em;
 }
 
 .movie-filter-wrapper {
@@ -18,5 +20,5 @@
 .movie-filter-wrapper label {
   flex-direction: column;
   font-weight: bold;
-  margin-right: 0.4 em;
+  margin-right: 0.4em;
 }

@@ -24,16 +24,18 @@ class MovieContainer extends Component {
 
   render() {
     return (
-      <div className="movie-container-wrapper container">
-        <div className="movie-filter-wrapper">
-          <label htmlFor="movie-filter-input">Filter:</label>
-          <input
-            id="movie-filter-input"
-            type="text"
-            onChange={this.onFilterChange}
-          />
+      <div className="col-xs-12 col-lg-8">
+        <div className="movie-container-wrapper">
+          <div className="movie-filter-wrapper">
+            <label htmlFor="movie-filter-input">Filter:</label>
+            <input
+              id="movie-filter-input"
+              type="text"
+              onChange={this.onFilterChange}
+            />
+          </div>
+          <div className="row">{this.renderMovies()}</div>
         </div>
-        <div className="row">{this.renderMovies()}</div>
       </div>
     );
   }
@@ -55,7 +57,7 @@ class MovieContainer extends Component {
 
     return matchingMovies.map((movie, key) => {
       return (
-        <div className="col-xl-6 col-md-12">
+        <div className="col-md-6 col-xs-12">
           <MovieItem key={key} movie={movie} />
         </div>
       );

@@ -9,8 +9,12 @@ class App extends Component {
     return (
       <div className="app-container">
         <TitleContainer />
-        <MovieForm />
-        <MovieContainer />
+        <div className="container">
+          <div className="row">
+            <MovieForm />
+            <MovieContainer />
+          </div>
+        </div>
       </div>
     );
   }

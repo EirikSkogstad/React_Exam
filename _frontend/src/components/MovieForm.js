@@ -17,42 +17,44 @@ class MovieForm extends Component {
 
   render() {
     return (
-      <div className="movie-form-wrapper">
-        <form onSubmit={this.handleSubmit} ref={ref => (this.formRef = ref)}>
-          <label htmlFor="titleInput">
-            Title:
-            <input
-              onChange={this.handleInputChange}
-              type="text"
-              name="title"
-              id="titleInput"
-              required
-            />
-          </label>
-          <label htmlFor="yearInput">
-            Year:
-            <input
-              onChange={this.handleInputChange}
-              type="number"
-              name="year"
-              min={this.state.minYear}
-              max={this.state.maxYear}
-              id="yearInput"
-              required
-            />
-          </label>
-          <label htmlFor="descriptionInput">
-            Description:
-            <textarea
-              onChange={this.handleInputChange}
-              type="textbox"
-              name="description"
-              id="descriptionInput"
-              required
-            />
-          </label>
-          <button>Submit</button>
-        </form>
+      <div className="col-xs-12 col-lg-4">
+        <div className="movie-form-wrapper">
+          <form onSubmit={this.handleSubmit} ref={ref => (this.formRef = ref)}>
+            <label htmlFor="titleInput">
+              Title:
+              <input
+                onChange={this.handleInputChange}
+                type="text"
+                name="title"
+                id="titleInput"
+                required
+              />
+            </label>
+            <label htmlFor="yearInput">
+              Year:
+              <input
+                onChange={this.handleInputChange}
+                type="number"
+                name="year"
+                min={this.state.minYear}
+                max={this.state.maxYear}
+                id="yearInput"
+                required
+              />
+            </label>
+            <label htmlFor="descriptionInput">
+              Description:
+              <textarea
+                onChange={this.handleInputChange}
+                type="textbox"
+                name="description"
+                id="descriptionInput"
+                required
+              />
+            </label>
+            <button>Submit</button>
+          </form>
+        </div>
       </div>
     );
   }

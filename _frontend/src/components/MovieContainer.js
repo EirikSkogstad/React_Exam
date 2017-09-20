@@ -11,6 +11,7 @@ class MovieContainer extends Component {
     };
 
     this.onFilterChange = this.onFilterChange.bind(this);
+    this.onDeleteClick = this.onDeleteClick.bind(this);
   }
 
   componentWillMount() {
@@ -58,11 +59,13 @@ class MovieContainer extends Component {
     return matchingMovies.map((movie, key) => {
       return (
         <div className="col-md-6 col-xs-12">
-          <div className="movie-item-wrapper">
+          <div className="movie-item-wrapper" key={key}>
             <h1>{movie.title}</h1>
             <h3>{movie.year}</h3>
             <p>{movie.description}</p>
-            <button>Delete</button>
+            <button onClick={() => this.onDeleteClick(movie._id, key)}>
+              Delete
+            </button>
           </div>
         </div>
       );
@@ -82,6 +85,25 @@ class MovieContainer extends Component {
   onFilterChange(event) {
     this.setState({ movieFilter: event.target.value });
     this.renderMovies();
+  }
+
+  onDeleteClick(uniqueId, index) {
+    fetch(`http://localhost:1234/movies/${uniqueId}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .catch(err => console.log(err));
+
+    // Update local array
+    let newMovies = this.state.movies.slice();
+    newMovies.splice(index, 1);
+    this.setState({
+      movies: newMovies
+    });
   }
 }
 

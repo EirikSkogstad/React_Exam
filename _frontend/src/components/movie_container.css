@@ -23,19 +23,10 @@
   margin-right: 0.4em;
 }
 
-
 .movie-item-wrapper {
   background: white;
   border-radius: 5px;
-}
-
-.movie-item-wrapper p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+  margin-top: 1em;
+  padding: 0.5em;
   word-wrap: break-word;
-  padding: 0.2em;
 }

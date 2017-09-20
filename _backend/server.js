@@ -43,4 +43,17 @@ app.post("/movies", (req, res) => {
   });
 });
 
+app.delete("/movies/:id", (req, res) => {
+  const id = req.param("id");
+  if (id) {
+    MovieModel.remove({ _id: id }, err => {
+      if (err) {
+        res.send(err);
+      } else {
+        console.log("Deleted movie with id: " + id);
+      }
+    });
+  }
+});
+
 app.listen(serverPort, () => console.log(`Listening on port: ${serverPort}`));

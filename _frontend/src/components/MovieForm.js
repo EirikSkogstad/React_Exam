@@ -19,6 +19,7 @@ class MovieForm extends Component {
     return (
       <div className="col-xs-12 col-lg-4">
         <div className="movie-form-wrapper">
+          <h2 className="header-underline">New Movie:</h2>
           <form onSubmit={this.handleSubmit} ref={ref => (this.formRef = ref)}>
             <label htmlFor="titleInput">
               Title:
@@ -72,8 +73,6 @@ class MovieForm extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-
     if (this.isFormFilled()) {
       fetch("http://localhost:1234/movies", {
         method: "POST",
@@ -88,7 +87,7 @@ class MovieForm extends Component {
         })
       })
         .then(res => res.json())
-        .then(json => console.log(json));
+        .catch(err => console.log(err));
     } else {
       alert("Form is not filled properly out!");
     }

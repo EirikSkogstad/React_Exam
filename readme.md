@@ -1,9 +1,9 @@
 # Innlevering 01: "Hello world"
-For innlevering 01 valgte jeg å lage en applikasjon som lister ulike filmer. Brukeren skulle ha muligheten til å..
-- legge til filmer. 
-- se ulike filmer som har blitt lagt til. 
-- filtrere filmer som er lagt til
-- kunne endre filmer som allerede er lagt til.
+For innlevering 01 valgte jeg å lage en applikasjon som lister ulike filmer. Brukeren skulle ha muligheten til å.. <br/>
+- legge til filmer. <br/>
+- se ulike filmer som har blitt lagt til. <br/>
+- filtrere filmer som er lagt til<br/>
+- kunne endre filmer som allerede er lagt til.<br/>
 Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli komfortabel med bruk av ulike "HTTP-verb" i Express.
 
 

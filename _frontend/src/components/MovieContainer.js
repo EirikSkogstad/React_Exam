@@ -26,6 +26,7 @@ class MovieContainer extends Component {
     return (
       <div className="col-xs-12 col-lg-8">
         <div className="movie-container-wrapper">
+          <h2 className="header-underline">Movies:</h2>
           <div className="movie-filter-wrapper">
             <label htmlFor="movie-filter-input">Filter:</label>
             <input

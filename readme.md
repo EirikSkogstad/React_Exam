@@ -32,11 +32,9 @@ Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli 
     som React-Native, slik at en kan gjenbruke nesten all koden til lage IOS og Android apper.
 
 ##### Ulemper 
-- Samme utvikler på begge sider, ikke nødvendigvis like god i backend som frontend. 
-- Node er ikke alltid like kjapt. 
-
-
-
+- Samme utvikler på både frontend og backend gjør at utvikleren ikke får spesialisert seg like mye, som han/hun 
+kunne gjort ellers.
+- Ganske nytt sammenlignet med eldre teknologier som JavaEE, Spring. 
 ### Hva er et (web-)API, og hva er noen fordeler og ulemper ved å lage et? Når bør man ikke lage et API?
 Et web-API er et API som utviklere kan bruke til å få tak i eller sende data til "backend delen" av 
 en applikasjon(Som vanligvis lagres i en database).

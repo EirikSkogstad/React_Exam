@@ -32,7 +32,6 @@ app.get("/movies", (req, res) => {
 app.post("/movies", (req, res) => {
   const body = req.body;
   const movie = new MovieModel(body);
-  // Validation???
 
   movie.save((err, savedMovie) => {
     if (err) {

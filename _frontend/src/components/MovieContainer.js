@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./movie_container.css";
-import MovieItem from "./MovieItem";
 
 class MovieContainer extends Component {
   constructor() {
@@ -59,7 +58,12 @@ class MovieContainer extends Component {
     return matchingMovies.map((movie, key) => {
       return (
         <div className="col-md-6 col-xs-12">
-          <MovieItem key={key} movie={movie} />
+          <div className="movie-item-wrapper">
+            <h1>{movie.title}</h1>
+            <h3>{movie.year}</h3>
+            <p>{movie.description}</p>
+            <button>Delete</button>
+          </div>
         </div>
       );
     });

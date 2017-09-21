@@ -5,20 +5,47 @@ For innlevering 01 valgte jeg å lage en applikasjon som lister ulike filmer. Br
 - filtrere filmer som er lagt til<br/>
 Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli komfortabel med bruk av ulike "HTTP-verb" i Express.
 
+### Skjermbilde av applikasjonen:
+![alt screenshot](https://bytebucket.org/eSkogstad/web_api_innlevering01/raw/b3e2c32d7fa9b435c31b49e22053dc011d484a1d/screenshot.jpg?token=b1fdcc7341b18d176b9bd22c0cbe27a648732bba)
 
 ### Hvordan starte applikasjonen:
 - Pass på at mongodb kjører og at node er install. I tilegg trengs enten npm eller yarn.
 - Åpne to terminal vinduer og naviger til både _backend og _frontend mappene.
 - Kjør så <code>yarn install</code> eller <code>npm install</code>, i begge mappene.
 - Deretter kjør <code>yarn start</code> eller <code>npm start</code>, i begge mappene.
-### Oppsett:
-- Prosjektet er del i to mapper: "frontend" og "backend". Grunnen er at dette vil gjøre det lettere å enkelt å separere de to "prosjektene". 
-- Dette kunne og også vært løst med to ulike Git repositories, men når jeg kun er en utvikler og prosjektet er såpass lite, så ville det bare gjort ting vanskeligere.) 
-- Fordelen med å gjøre dette er at det hindrer frontend og backend deler konfigurasjon og dependencies.
-- Dette gjør det også enklere å splitte prosjektet senere, eller laste opp på ulike servere.
 
+### Forklaring av ulike valg:
+#### Oppsett:
+Prosjektet er delt i to mapper: "frontend" og "backend". Grunnen er at gjorde dette, var for å lettere kunne separere "backend"(Node) og "frontend"(React).
+Dette kunne også vært løst med to ulike Git repositories, men når det var kun jeg som utviklet, så syntes jeg dette var unødvendig. 
 
-### Fordeler og ulemper med en stack bygget kun av Javascript:
+Fordelen med å gjøre dette er at det hindrer frontend og backend deler konfigurasjon og dependencies.
+En annen fordel er at det hindret at både backend og frontend fikk unødvendige dependencies.
+
+#### Verktøy:
+Under utvikling valgte jeg å prøve kodeformatterings-verktøyet [Prettier](https://github.com/prettier/prettier). 
+Prettier har ganske sterke meninger om hvordan koden burde formateres, noe jeg syntes var en god ting. 
+Ettersom jeg ikke hadde en eksisterende preferanse/style-guide, så syntes jeg Prettier fungerte godt som en mal å følge. 
+Prettier fungerte fungerte utmerket til formattering, og programmer kjørte jeg enkelt og greit fra kommandolinjen. 
+
+#### URL og HTTP verb:
+De fleste HTTP verbene fungerer på URL'en "serverpath"/movies og returnerer JSON som data. <br>
+GET forespørsler på /movies returnerer alle filmene. Her vurderte jeg å ha muligheten til å sende
+GET forespørsel mot /movies/:id, men valgte å ikke implementere dette, siden applikasjonen foreløpig 
+ikke har bruk for dette.
+
+POST forespørsler går også mot /movies, og her er dataen naturligvis send i HTTP forespørslens "body". <br>
+DELETE er en av de få hvor id må spesifiseres. Dette gjøres ved å sende forespørsel til /movies/:id
+slik at node serveren / API'et vet hvilken film som skal slettes.
+
+#### Oppsett av listen
+Angående listen i applikasjonen, så valgte jeg å endre litt på hvordan den var bygget opp og ser ut.
+En vanlig <code>ul</code> tag med <code>li</code> hadde kanskje vært teknisk og brukervennlig bedre, 
+enn måten jeg bygde det på.
+Grunnen til at jeg lagde listen med <code>div</code> elementer isteden, var fordi jeg ønsket å 
+prøve å få litt mer erfaring med Bootstrap, og prøve å gjøre siden mer "responsiv".
+
+#### Fordeler og ulemper med en stack bygget kun av Javascript:
 
 ##### Fordeler:
 - En stor fordel med "fullstack" Javascript er mengden biblioteker som ligger lett tilgjengelig. 
@@ -34,7 +61,9 @@ Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli 
 ##### Ulemper 
 - Samme utvikler på både frontend og backend gjør at utvikleren ikke får spesialisert seg like mye, som han/hun 
 kunne gjort ellers.
-- Ganske nytt sammenlignet med eldre teknologier som JavaEE, Spring. 
+- Teknologien er relativt ny sammenlignet med eldre teknologier som f.eks JavaEE og Spring. Dette gjør at ikke alle problemer 
+nødvendigvis har like mange gode svar, lett tilgjengelige på nettet.
+
 ### Hva er et (web-)API, og hva er noen fordeler og ulemper ved å lage et? Når bør man ikke lage et API?
 Et web-API er et API som utviklere kan bruke til å få tak i eller sende data til "backend delen" av 
 en applikasjon(Som vanligvis lagres i en database).

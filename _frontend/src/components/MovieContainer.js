@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import "./movie_container.css";
+import React, { Component } from 'react';
+import './movie_container.css';
 
 class MovieContainer extends Component {
   constructor() {
     super();
     this.state = {
       movies: [],
-      restUrl: "http://localhost:1234/movies",
-      movieFilter: ""
+      restUrl: 'http://localhost:1234/movies',
+      movieFilter: '',
     };
 
     this.onFilterChange = this.onFilterChange.bind(this);
@@ -44,7 +44,7 @@ class MovieContainer extends Component {
   renderMovies() {
     const movieFilter = this.state.movieFilter;
     let matchingMovies = this.state.movies;
-    if (movieFilter !== "") {
+    if (movieFilter !== '') {
       matchingMovies = this.filterMovies(movieFilter);
     }
 
@@ -77,7 +77,8 @@ class MovieContainer extends Component {
       const searchString = movieFilter.toLowerCase();
       const title = movie.title.toLowerCase();
 
-      //FIXME bug somewhere here, displays items that doesnt match search, instead of those that do.
+      //FIXME bug somewhere here,
+      // displays items that doesnt match search, instead of those that do.
       return title.includes(searchString);
     });
   }
@@ -89,11 +90,11 @@ class MovieContainer extends Component {
 
   onDeleteClick(uniqueId, index) {
     fetch(`http://localhost:1234/movies/${uniqueId}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
     })
       .then(res => res.json())
       .catch(err => console.log(err));
@@ -102,7 +103,7 @@ class MovieContainer extends Component {
     let newMovies = this.state.movies.slice();
     newMovies.splice(index, 1);
     this.setState({
-      movies: newMovies
+      movies: newMovies,
     });
   }
 }

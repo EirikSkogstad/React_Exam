@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import "./title_container.css";
+import React, { Component } from 'react';
+import './title_container.css';
 
 class TitleContainer extends Component {
   constructor() {
     super();
     this.state = {
       animals: [
-        "cats",
-        "honey badgers",
-        "mongeese",
-        "monkeys",
-        "donkeys",
-        "snakes",
-        "'Vampire'-kittens"
+        'cats',
+        'honey badgers',
+        'mongeese',
+        'monkeys',
+        'donkeys',
+        'snakes',
+        "'Vampire'-kittens",
       ],
-      currentAnimal: "",
-      currentBackground: ""
+      currentAnimal: '',
+      currentBackground: '',
     };
     this.changeAnimal = this.changeAnimal.bind(this);
   }

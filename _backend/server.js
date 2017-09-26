@@ -1,12 +1,12 @@
 // Imports:
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 
 const serverPort = 1234;
-const dbName = "movies";
+const dbName = 'movies';
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -14,12 +14,12 @@ mongoose.connect(`mongodb://localhost/${dbName}/`);
 
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  year: { type: Number, required: true },
-  description: { type: String, required: true }
+  year: { type: Number, required: true, min: 1800 },
+  description: { type: String, required: true },
 });
-const MovieModel = mongoose.model("Movie", movieSchema);
+const MovieModel = mongoose.model('Movie', movieSchema);
 
-app.get("/movies", (req, res) => {
+app.get('/movies', (req, res) => {
   MovieModel.find((err, result) => {
     if (err) {
       res.send(err);
@@ -29,7 +29,7 @@ app.get("/movies", (req, res) => {
   });
 });
 
-app.post("/movies", (req, res) => {
+app.post('/movies', (req, res) => {
   const body = req.body;
   const movie = new MovieModel(body);
 
@@ -42,14 +42,14 @@ app.post("/movies", (req, res) => {
   });
 });
 
-app.delete("/movies/:id", (req, res) => {
-  const id = req.param("id");
+app.delete('/movies/:id', (req, res) => {
+  const id = req.param('id');
   if (id) {
     MovieModel.remove({ _id: id }, err => {
       if (err) {
         res.send(err);
       } else {
-        console.log("Deleted movie with id: " + id);
+        console.log('Deleted movie with id: ' + id);
       }
     });
   }

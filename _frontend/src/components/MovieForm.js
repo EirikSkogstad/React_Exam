@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import "./movie_form.css";
+import React, { Component } from 'react';
+import './movie_form.css';
 
 class MovieForm extends Component {
   constructor() {
@@ -7,9 +7,9 @@ class MovieForm extends Component {
     this.state = {
       maxYear: new Date().getFullYear(),
       minYear: 1800,
-      title: "",
+      title: '',
       year: 0,
-      description: ""
+      description: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -64,53 +64,53 @@ class MovieForm extends Component {
     let value = event.target.value;
     const name = event.target.name;
 
-    if (event.target.name === "year") {
+    if (event.target.name === 'year') {
       value = parseInt(value, 10);
     }
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
   handleSubmit(event) {
     if (this.isFormFilled()) {
-      fetch("http://localhost:1234/movies", {
-        method: "POST",
+      fetch('http://localhost:1234/movies', {
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           title: this.state.title,
           year: this.state.year,
-          description: this.state.description
-        })
+          description: this.state.description,
+        }),
       })
         .then(res => res.json())
         .catch(err => console.log(err));
     } else {
-      alert("Form is not filled properly out!");
+      alert('Form is not filled properly out!');
     }
 
     this.resetForm();
   }
 
   isFormFilled() {
-    if (this.state.title === "") {
+    if (this.state.title === '') {
       return false;
     }
     if (this.state.year === 0) {
       return false;
     }
-    return this.state.description !== "";
+    return this.state.description !== '';
   }
 
   resetForm() {
     this.formRef.reset();
     this.setState({
-      title: "",
+      title: '',
       year: 0,
-      description: ""
+      description: '',
     });
   }
 }

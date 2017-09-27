@@ -5,8 +5,8 @@
   padding: 2em;
   margin-top: 2em;
 
-  background: lightblue;
-  border-radius: 10px;
+  background: rgba(220,220,220,0.6);
+  border-radius: 5px;
 }
 
 .movie-form-wrapper form label {

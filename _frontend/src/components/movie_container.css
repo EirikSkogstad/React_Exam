@@ -1,8 +1,8 @@
 .movie-container-wrapper {
-  background: lightblue;
+  background: rgba(220,220,220,0.6);
   text-align: center;
   padding: 2em;
-  border-radius: 10px;
+  border-radius: 5px;
   margin-top: 2em;
 }
 

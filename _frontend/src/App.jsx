@@ -12,7 +12,7 @@ class App extends Component {
         <div className="container">
           <div className="row">
             <MovieForm />
-            <MovieContainer />
+            <MovieContainer/>
           </div>
         </div>
       </div>

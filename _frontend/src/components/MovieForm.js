@@ -8,7 +8,7 @@ class MovieForm extends Component {
       maxYear: new Date().getFullYear(),
       minYear: 1800,
       title: '',
-      year: 0,
+      year: new Date().getFullYear(),
       description: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -20,11 +20,12 @@ class MovieForm extends Component {
       <div className="col-xs-12 col-lg-4">
         <div className="movie-form-wrapper">
           <h2 className="header-underline">New Movie:</h2>
-          <form onSubmit={this.handleSubmit} ref={ref => (this.formRef = ref)}>
+          <form onSubmit={this.handleSubmit}>
             <label htmlFor="titleInput">
               Title:
               <input
                 onChange={this.handleInputChange}
+                value={this.state.title}
                 type="text"
                 name="title"
                 id="titleInput"
@@ -35,6 +36,7 @@ class MovieForm extends Component {
               Year:
               <input
                 onChange={this.handleInputChange}
+                value={this.state.year}
                 type="number"
                 name="year"
                 min={this.state.minYear}
@@ -47,6 +49,7 @@ class MovieForm extends Component {
               Description:
               <textarea
                 onChange={this.handleInputChange}
+                value={this.state.description}
                 type="textbox"
                 name="description"
                 id="descriptionInput"
@@ -93,6 +96,7 @@ class MovieForm extends Component {
     }
 
     this.resetForm();
+    //event.preventDefault();
   }
 
   isFormFilled() {
@@ -106,11 +110,12 @@ class MovieForm extends Component {
   }
 
   resetForm() {
-    this.formRef.reset();
-    this.setState({
-      title: '',
-      year: 0,
-      description: '',
+    this.setState(prevState => {
+      return {
+        title: '',
+        year: prevState.maxYear,
+        description: '',
+      };
     });
   }
 }

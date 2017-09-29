@@ -77,7 +77,6 @@ class MovieContainer extends Component {
       const searchString = movieFilter.toLowerCase();
       const title = movie.title.toLowerCase();
 
-      //FIXME bug somewhere here,
       // displays items that doesnt match search, instead of those that do.
       return title.includes(searchString);
     });

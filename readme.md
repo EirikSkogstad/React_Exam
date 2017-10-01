@@ -6,7 +6,7 @@ For innlevering 01 valgte jeg å lage en applikasjon som lister ulike filmer. Br
 Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli komfortabel med bruk av ulike "HTTP-verb" i Express.
 
 ### Skjermbilde av applikasjonen:
-![alt screenshot](https://bytebucket.org/eSkogstad/web_api_innlevering01/raw/b3e2c32d7fa9b435c31b49e22053dc011d484a1d/screenshot.jpg?token=b1fdcc7341b18d176b9bd22c0cbe27a648732bba)
+![alt screenshot](https://bytebucket.org/eSkogstad/web_api_innlevering01/raw/a46dc2626ab89c671469dedc8aa9fe6b11c09da0/screenshot.jpg?token=4e332c811989938ddd6af89778c13988a8345c3e)
 
 ### Hvordan starte applikasjonen:
 - Pass på at mongodb kjører og at node er install. I tilegg trengs enten npm eller yarn.
@@ -26,6 +26,17 @@ Under utvikling prøvde jeg kodeformatterings-verktøyet [Prettier](https://gith
 Prettier har ganske sterke meninger om hvordan koden burde formateres, noe jeg syntes var en god ting. 
 Ettersom jeg ikke hadde en eksisterende preferanse/style-guide, så syntes jeg Prettier fungerte godt som en mal å følge. 
 Prettier fungerte fungerte utmerket til formattering, og programmer kjørte jeg enkelt og greit fra kommandolinjen. 
+
+Ganske sent i prosjektet prøvde jeg å integrere ESLint i arbeidsflyten. Dette var først litt problematisk, ettersom ESLint
+preset'en jeg valgte(Airbnb), hadde litt andre meninger enn Prettier, om hvordan koden skulle formateres.
+Dette gjorde at jeg valgte facebook sin preset isteden ([fbjs](https://www.npmjs.com/package/eslint-config-fbjs)).
+Denne passet Prettier sin kodestil mye bedre, og krevde ingen konfigurasjon i <code>.eslintrc.json</code> .
+
+Siden jeg hadde fått inn vanen med å bruke prettier fra kommandolinjen, ville jeg prøvde å gjøre det samme med ESLint.
+Dette løste jeg ved å bruke et verktøy som het: [prettier-eslint-cli](https://www.npmjs.com/package/prettier-eslint-cli).
+Denne gjorde det enklere å kjøre ESLint for fiksing av "kodefeil", og deretter kjøre Prettier for formatering.
+I <code>package.json</code> puttet jeg script for dette(<code>format</code>), som jeg kjørte hver gang jeg var "ferdig" med å kode.
+
 
 #### URL og HTTP verb:
 De fleste HTTP verbene fungerer på URL'en "serverpath"/movies og returnerer JSON som data. <br>

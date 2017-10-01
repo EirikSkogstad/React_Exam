@@ -1,25 +1,15 @@
 import React, { Component } from 'react';
 import './movie_container.css';
+import MovieItem from './MovieItem';
 
 class MovieContainer extends Component {
-  constructor() {
-    super();
+  constructor(movies, deleteHandler) {
+    super(movies, deleteHandler);
     this.state = {
-      movies: [],
-      restUrl: 'http://localhost:1234/movies',
       movieFilter: '',
     };
 
     this.onFilterChange = this.onFilterChange.bind(this);
-    this.onDeleteClick = this.onDeleteClick.bind(this);
-  }
-
-  componentWillMount() {
-    fetch(this.state.restUrl)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ movies: data });
-      });
   }
 
   render() {
@@ -43,7 +33,7 @@ class MovieContainer extends Component {
 
   renderMovies() {
     const movieFilter = this.state.movieFilter;
-    let matchingMovies = this.state.movies;
+    let matchingMovies = this.props.movies;
     if (movieFilter !== '') {
       matchingMovies = this.filterMovies(movieFilter);
     }
@@ -63,7 +53,7 @@ class MovieContainer extends Component {
             <h1>{movie.title}</h1>
             <h3>{movie.year}</h3>
             <p>{movie.description}</p>
-            <button onClick={() => this.onDeleteClick(movie._id, key)}>
+            <button onClick={() => this.props.deleteHandler(movie._id, key)}>
               Delete
             </button>
           </div>
@@ -73,11 +63,10 @@ class MovieContainer extends Component {
   }
 
   filterMovies(movieFilter) {
-    return this.state.movies.filter(movie => {
+    return this.props.movies.filter(movie => {
       const searchString = movieFilter.toLowerCase();
       const title = movie.title.toLowerCase();
 
-      // displays items that doesnt match search, instead of those that do.
       return title.includes(searchString);
     });
   }
@@ -85,25 +74,6 @@ class MovieContainer extends Component {
   onFilterChange(event) {
     this.setState({ movieFilter: event.target.value });
     this.renderMovies();
-  }
-
-  onDeleteClick(uniqueId, index) {
-    fetch(`http://localhost:1234/movies/${uniqueId}`, {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(res => res.json())
-      .catch(err => console.log(err));
-
-    // Update local array
-    let newMovies = this.state.movies.slice();
-    newMovies.splice(index, 1);
-    this.setState({
-      movies: newMovies,
-    });
   }
 }
 

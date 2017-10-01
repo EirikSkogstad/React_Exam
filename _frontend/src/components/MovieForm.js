@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './movie_form.css';
 
 class MovieForm extends Component {
-  constructor() {
-    super();
+  constructor(submitHandler) {
+    super(submitHandler);
     this.state = {
       maxYear: new Date().getFullYear(),
       minYear: 1800,
@@ -77,26 +77,18 @@ class MovieForm extends Component {
 
   handleSubmit(event) {
     if (this.isFormFilled()) {
-      fetch('http://localhost:1234/movies', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: this.state.title,
-          year: this.state.year,
-          description: this.state.description,
-        }),
-      })
-        .then(res => res.json())
-        .catch(err => console.log(err));
+      const movie = {
+        title: this.state.title,
+        year: this.state.year,
+        description: this.state.description,
+      };
+      this.props.submitHandler(movie);
     } else {
       alert('Form is not filled properly out!');
     }
 
     this.resetForm();
-    //event.preventDefault();
+    event.preventDefault();
   }
 
   isFormFilled() {

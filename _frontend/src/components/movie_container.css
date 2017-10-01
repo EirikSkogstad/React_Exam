@@ -1,5 +1,5 @@
 .movie-container-wrapper {
-  background: rgba(220,220,220,0.6);
+  background: rgba(220, 220, 220, 0.6);
   text-align: center;
   padding: 2em;
   border-radius: 5px;
@@ -21,12 +21,4 @@
   flex-direction: column;
   font-weight: bold;
   margin-right: 0.4em;
-}
-
-.movie-item-wrapper {
-  background: white;
-  border-radius: 5px;
-  margin-top: 1em;
-  padding: 0.5em;
-  word-wrap: break-word;
 }

@@ -10,7 +10,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "format": "prettier-eslint \"src/**/*.js\" --write",
+    "format": "prettier-eslint \"src/**/*.js\" --write prettier \"src/**/*.@(css|html)\" --write",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

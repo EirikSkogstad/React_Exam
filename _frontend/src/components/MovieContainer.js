@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './movie_container.css';
-import MovieItem from './MovieItem';
 
 class MovieContainer extends Component {
   constructor(movies, deleteHandler) {

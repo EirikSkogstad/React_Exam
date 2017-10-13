@@ -3,6 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jwt-simple');
+const bcryptjs = require('bcryptjs');
+
 const app = express();
 
 const serverPort = 1234;

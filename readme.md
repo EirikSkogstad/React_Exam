@@ -78,6 +78,9 @@ har like mange gode svar lett tilgjengelige på nettet.
 Et web-API er et API som utviklere kan bruke til å få tak i eller sende data til "backend delen" av 
 en applikasjon(Som vanligvis lagres i en database).
 
+En fordel med et å produsere et JSON/Web-API vil være at dataen kan brukes i mange ulike klienter. Hvis dataen overføres som JSON så
+vil en mobilapp kunne bruke dataen uten problemer. Hadde dette vært sendt ut som f.eks HTML, så ville det krevd mye mer arbeid for en mobilappliksjon å bruke dataen.
+
 API- lar en utvikler enkelt bruke funksjonaliteten til en applikasjon/tjeneste. Eksempler kan være alt fra Google Maps,
 sende spørringer om vær i ulike lokasjoner.
 

@@ -7,6 +7,7 @@ const jwt = require('jwt-simple');
 const bcryptjs = require('bcryptjs');
 
 const app = express();
+const router = express.Router();
 
 const serverPort = 1234;
 const dbName = 'movies';

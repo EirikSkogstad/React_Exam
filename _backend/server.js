@@ -19,16 +19,16 @@ app.use(bodyParser.json());
 app.use(cors());
 mongoose.connect(`mongodb://localhost/${dbName}/`);
 
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  password: { type: String, minlength: MIN_PASSWORD_LENGTH, required: true },
-  privateMovies: { type: [movieSchema], required: false },
-});
-
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
   year: { type: Number, required: true, min: 1800 },
   description: { type: String, required: true },
+});
+
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  password: { type: String, minlength: MIN_PASSWORD_LENGTH, required: true },
+  privateMovies: { type: [movieSchema], required: false },
 });
 
 const MovieModel = mongoose.model('Movie', movieSchema);
@@ -73,7 +73,7 @@ app.delete('/movies/:id', (req, res) => {
 });
 
 // TODO unsure about path, user?? Usermovies?
-app.get('/user', (req, res) => {
+app.get('/private_movies', (req, res) => {
   const token = req.header('Authorization');
   if (!token) {
     res.status(401).send('Token is missing!');
@@ -82,13 +82,13 @@ app.get('/user', (req, res) => {
 });
 
 app.post('/users', (req, res) => {
-  const user = req.body;
-  if (sendResponseIfInputInvalid(user, res)) {
+  const input = req.body;
+  if (sendResponseIfInputInvalid(input, res)) {
     return;
   }
 
   bcrypt.hash(req.username, 10, function(err, hash) {
-    const user = new UserModel(user.username, hash);
+    const user = new UserModel(input.username, hash);
 
     if (err) {
       res.send(err);
@@ -101,6 +101,16 @@ app.post('/users', (req, res) => {
       }
       res.status(201).send('User successfully created');
     });
+  });
+});
+
+app.get('/users', (req, res) => {
+  UserModel.find((err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
   });
 });
 

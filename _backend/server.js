@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jwt-simple');
 const bcrypt = require('bcryptjs');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const app = express();
 const router = express.Router();
@@ -17,7 +18,9 @@ const MIN_PASSWORD_LENGTH = 4;
 
 app.use(bodyParser.json());
 app.use(cors());
-mongoose.connect(`mongodb://localhost/${dbName}/`);
+mongoose.connect(`mongodb://localhost/${dbName}`, {
+  useMongoClient: true,
+});
 
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -26,10 +29,11 @@ const movieSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
+  username: { type: String, unique: true, required: true },
   password: { type: String, minlength: MIN_PASSWORD_LENGTH, required: true },
-  privateMovies: { type: [movieSchema], required: false },
+  privateMovies: [movieSchema],
 });
+userSchema.plugin(uniqueValidator);
 
 const MovieModel = mongoose.model('Movie', movieSchema);
 const UserModel = mongoose.model('User', userSchema);
@@ -72,7 +76,6 @@ app.delete('/movies/:id', (req, res) => {
   }
 });
 
-// TODO unsure about path, user?? Usermovies?
 app.get('/private_movies', (req, res) => {
   const token = req.header('Authorization');
   if (!token) {
@@ -82,22 +85,23 @@ app.get('/private_movies', (req, res) => {
 });
 
 app.post('/users', (req, res) => {
-  const input = req.body;
+  let input = req.body;
   if (sendResponseIfInputInvalid(input, res)) {
     return;
   }
 
-  bcrypt.hash(req.username, 10, function(err, hash) {
-    const user = new UserModel(input.username, hash);
-
-    if (err) {
-      res.send(err);
+  bcrypt.hash(input.username, 10, function(hashErr, hash) {
+    if (hashErr) {
+      res.send(hashErr);
       return;
     }
 
-    user.save((err, savedUser) => {
-      if (err) {
-        res.send(err);
+    input.password = hash;
+    const user = new UserModel(input);
+
+    user.save((saveErr, savedUser) => {
+      if (saveErr) {
+        res.send(saveErr);
       }
       res.status(201).send('User successfully created');
     });
@@ -140,5 +144,20 @@ function sendResponseIfInputInvalid(user, res) {
     return true;
   }
 
+  // if (isUsernameTaken(user.username)) {
+  //   res.status(400).send(`${user.username} is a already taken!`);
+  //   return true;
+  // }
+
   return false;
+}
+
+function isUsernameTaken(input) {
+  UserModel.findOne({ username: input }, (err, data) => {
+    if (err) {
+      return true;
+    }
+
+    return data !== null;
+  });
 }

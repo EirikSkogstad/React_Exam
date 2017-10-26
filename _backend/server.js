@@ -76,7 +76,7 @@ app.delete('/movies/:id', (req, res) => {
   }
 });
 
-app.get('/private_movies', (req, res) => {
+app.get('/users/:id/movies', (req, res) => {
   const token = req.header('Authorization');
   if (!token) {
     res.status(401).send('Token is missing!');
@@ -119,7 +119,31 @@ app.get('/users', (req, res) => {
   });
 });
 
-app.post('/login', (req, res) => {});
+app.post('/authenticate', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  UserModel.findOne({ username: username })
+    .then(user => {
+      if (!bcrypt.compareSync(password, user.passwordHash)) {
+        res.status(401).send('wrong password');
+      } else {
+        // generate token
+        const token = jwt.encode(
+          {
+            username,
+          },
+          jwtSecret
+        );
+
+        // send token
+        res.send(token);
+      }
+    })
+    .catch(err => {
+      return res.status(401).send('No user by that username.');
+    });
+});
 
 app.listen(serverPort, () => console.log(`Listening on port: ${serverPort}`));
 
@@ -145,7 +169,7 @@ function sendResponseIfInputInvalid(user, res) {
     return true;
   }
 
-  if(user.movies !== undefined) {
+  if (user.movies !== undefined) {
     res.status(400).send('User cannot be created with existing movies.');
     return true;
   }

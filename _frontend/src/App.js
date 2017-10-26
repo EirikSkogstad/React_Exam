@@ -3,6 +3,7 @@ import './App.css';
 import MovieContainer from './components/MovieContainer';
 import MovieForm from './components/MovieForm';
 import TitleContainer from './components/TitleContainer';
+import LoginForm from './components/LoginForm';
 
 class App extends Component {
   constructor() {
@@ -24,20 +25,24 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div className="app-container">
-        <TitleContainer />
-        <div className="container">
-          <div className="row">
-            <MovieForm submitHandler={this.submitMovie} />
-            <MovieContainer
-              movies={this.state.movies}
-              deleteHandler={this.onDeleteClick}
-            />
+    if (this.isUserLoggedIn()) {
+      return (
+        <div className="app-container">
+          <TitleContainer />
+          <div className="container">
+            <div className="row">
+              <MovieForm submitHandler={this.submitMovie} />
+              <MovieContainer
+                movies={this.state.movies}
+                deleteHandler={this.onDeleteClick}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return <LoginForm />;
+    }
   }
 
   onDeleteClick(uniqueId, index) {
@@ -75,6 +80,10 @@ class App extends Component {
       .then(res => res.json())
       .then(json => this.addToArray(json)) // Recently added movie needs to be added this way, so that _id exists in this.state.movies
       .catch(err => console.log(err));
+  }
+
+  isUserLoggedIn() {
+    return localStorage.token !== undefined;
   }
 
   addToArray(movie) {

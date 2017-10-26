@@ -144,20 +144,10 @@ function sendResponseIfInputInvalid(user, res) {
     return true;
   }
 
-  // if (isUsernameTaken(user.username)) {
-  //   res.status(400).send(`${user.username} is a already taken!`);
-  //   return true;
-  // }
+  if(user.movies !== undefined) {
+    res.status(400).send('User cannot be created with existing movies.');
+    return true;
+  }
 
   return false;
-}
-
-function isUsernameTaken(input) {
-  UserModel.findOne({ username: input }, (err, data) => {
-    if (err) {
-      return true;
-    }
-
-    return data !== null;
-  });
 }

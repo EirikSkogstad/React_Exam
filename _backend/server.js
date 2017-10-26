@@ -101,7 +101,8 @@ app.post('/users', (req, res) => {
 
     user.save((saveErr, savedUser) => {
       if (saveErr) {
-        res.send(saveErr);
+        res.status(400).send(saveErr);
+        return;
       }
       res.status(201).send('User successfully created');
     });
@@ -130,7 +131,7 @@ app.listen(serverPort, () => console.log(`Listening on port: ${serverPort}`));
  */
 function sendResponseIfInputInvalid(user, res) {
   if (!user.username) {
-    res.send(400).send('Username must be present');
+    res.status(400).send('Username must be present');
     return true;
   }
 

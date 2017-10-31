@@ -85,25 +85,40 @@ app.get('/users/:id/movies', (req, res) => {
 
 app.post('/users', (req, res) => {
   let input = req.body;
+
   if (sendResponseIfInputInvalid(input, res)) {
     return;
   }
 
-  bcrypt.hash(input.username, 10, function(hashErr, hash) {
-    if (hashErr) {
-      res.send(hashErr);
+  UserModel.findOne({ username: input.username }, function(err, result) {
+    if (err) {
+      res
+        .status(500)
+        .send('Reading from database went wrong... (please send help)');
+      return;
+    }
+    if (result) {
+      console.log(result);
+      res.status(401).send('Username is already taken');
       return;
     }
 
-    input.password = hash;
-    const user = new UserModel(input);
-
-    user.save((saveErr, savedUser) => {
-      if (saveErr) {
-        res.status(400).send(saveErr);
+    bcrypt.hash(input.password, 10, function(hashErr, hash) {
+      if (hashErr) {
+        res.send(hashErr);
         return;
       }
-      res.status(201).send('User successfully created');
+
+      input.password = hash;
+
+      const user = new UserModel(input);
+      user.save((saveErr, savedUser) => {
+        if (saveErr) {
+          res.status(400).send(saveErr);
+          return;
+        }
+        res.status(201).send('User successfully created');
+      });
     });
   });
 });
@@ -184,12 +199,3 @@ function sendResponseIfInputInvalid(user, res) {
 
   return false;
 }
-
-/*function isNullOrEmpty(items) {
-  for (let obj in items) {
-    if (obj === null || obj === undefined || obj === '') {
-      return true;
-    }
-  }
-  return false;
-}*/

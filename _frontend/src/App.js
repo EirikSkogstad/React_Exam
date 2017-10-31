@@ -17,10 +17,10 @@ class App extends Component {
     this.submitMovie = this.submitMovie.bind(this);
 
     this.updateLoggedInState = this.updateLoggedInState.bind(this);
-    this.updateLoggedInState();
   }
 
   componentWillMount() {
+    this.updateLoggedInState();
     fetch(this.state.restUrl)
       .then(response => response.json())
       .then(data => {

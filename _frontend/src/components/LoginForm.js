@@ -110,7 +110,26 @@ class LoginForm extends Component {
       password: this.state.loginPassword,
     };
     const url = 'http://localhost:1234/authenticate/';
+    this.postAndSetToken(url, body);
+  }
 
+  handleCreateUserSubmit(e) {
+    e.preventDefault();
+    if (this.state.createPassword !== this.state.createPasswordVerify) {
+      LoginForm.displayError('Passwords do not match!');
+      return;
+    }
+    const body = {
+      username: this.state.createUsername,
+      password: this.state.createPassword,
+    };
+
+    const url = 'http://localhost:1234/users/';
+
+    this.postAndSetToken(url, body);
+  }
+
+  async postAndSetToken(url, body) {
     const res = await fetch(url, {
       method: 'POST',
       headers: {
@@ -122,7 +141,7 @@ class LoginForm extends Component {
 
     if (!res.ok) {
       const error = await res.text();
-      this.handleError(error);
+      LoginForm.displayError(error);
       return;
     }
 
@@ -133,11 +152,18 @@ class LoginForm extends Component {
     this.props.submitHandler();
   }
 
-  handleError(message) {
+  static displayError(message) {
     alert(message);
   }
 
-  handleCreateUserSubmit(e) {}
+  static isNullOrEmpty(items) {
+    for (let obj in items) {
+      if (obj === null || obj === undefined || obj === '') {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 export default LoginForm;

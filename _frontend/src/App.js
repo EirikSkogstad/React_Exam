@@ -10,7 +10,7 @@ class App extends Component {
     super();
     this.state = {
       movies: [],
-      restUrl: 'http://localhost:1234/movies/',
+      moviesUrl: 'http://localhost:1234/movies/',
       isUserLoggedIn: false,
     };
     this.onDeleteClick = this.onDeleteClick.bind(this);
@@ -19,13 +19,30 @@ class App extends Component {
     this.updateLoggedInState = this.updateLoggedInState.bind(this);
   }
 
-  componentWillMount() {
-    this.updateLoggedInState();
-    fetch(this.state.restUrl)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ movies: data });
+  async componentWillMount() {
+    await this.updateLoggedInState();
+    await this.fetchMovies();
+  }
+
+  async fetchMovies() {
+    if (this.state.isUserLoggedIn) {
+      const res = await fetch(this.state.moviesUrl, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          token: localStorage.token,
+        },
       });
+
+      if (!res.ok) {
+        const error = await res.text();
+        alert(error);
+        return;
+      }
+
+      const movies = await res.json();
+      this.setState({ movies: movies });
+    }
   }
 
   render() {
@@ -50,7 +67,7 @@ class App extends Component {
   }
 
   onDeleteClick(uniqueId, index) {
-    fetch(`${this.state.restUrl + uniqueId}`, {
+    fetch(`${this.state.moviesUrl + uniqueId}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -69,11 +86,12 @@ class App extends Component {
   }
 
   submitMovie(movie) {
-    fetch(this.state.restUrl, {
+    fetch(this.state.moviesUrl, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        token: localStorage.token,
       },
       body: JSON.stringify({
         title: movie.title,
@@ -92,6 +110,7 @@ class App extends Component {
     } else {
       this.setState({ isUserLoggedIn: false });
     }
+    this.fetchMovies();
   }
 
   addToArray(movie) {

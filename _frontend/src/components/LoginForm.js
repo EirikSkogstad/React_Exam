@@ -96,13 +96,6 @@ class LoginForm extends Component {
     });
   }
 
-  // FIXME this code does not currently make sense
-  /*
-    This needs to be implemented:
-    - Actually get username and password.
-    - Url should point to authenticate endpoint
-    - Dont set token if authentication failed
-   */
   async handleLoginSubmit(e) {
     e.preventDefault();
     const body = {
@@ -149,7 +142,19 @@ class LoginForm extends Component {
     console.log('got token', token);
 
     localStorage.setItem('token', token);
+
+    this.resetState();
     this.props.submitHandler();
+  }
+
+  resetState() {
+    this.setState({
+      loginUsername: '',
+      loginPassword: '',
+      createUsername: '',
+      createPassword: '',
+      createPasswordVerify: '',
+    });
   }
 
   static displayError(message) {

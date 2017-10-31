@@ -47,8 +47,8 @@ class MovieContainer extends Component {
 
     return matchingMovies.map((movie, key) => {
       return (
-        <div className="col-md-6 col-xs-12">
-          <div className="movie-item-wrapper" key={key}>
+        <div key={key} className="col-md-6 col-xs-12">
+          <div className="movie-item-wrapper">
             <h1>{movie.title}</h1>
             <h3>{movie.year}</h3>
             <p>{movie.description}</p>

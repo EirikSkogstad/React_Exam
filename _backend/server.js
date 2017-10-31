@@ -25,38 +25,91 @@ const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
   year: { type: Number, required: true, min: 1800 },
   description: { type: String, required: true },
+  userId: { type: String, required: true },
 });
 
 const userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
   password: { type: String, minlength: MIN_PASSWORD_LENGTH, required: true },
-  privateMovies: [movieSchema],
 });
+
 userSchema.plugin(uniqueValidator);
 
 const MovieModel = mongoose.model('Movie', movieSchema);
 const UserModel = mongoose.model('User', userSchema);
 
 app.get('/movies', (req, res) => {
-  MovieModel.find((err, result) => {
+  const token = req.header('token');
+  if (!token) {
+    res.status(401).send('Token is missing!');
+    return;
+  }
+  console.log(token);
+  const username = jwt.decode(token, jwtSecret);
+
+  console.log(username);
+  UserModel.findOne({ username: username }, function(err, result) {
     if (err) {
-      res.send(err);
-    } else {
-      res.send(result);
+      console.log(err);
+
+      res
+        .status(500)
+        .send('Reading from database went wrong... (please send help)');
+      return;
     }
+    if (!result) {
+      res.status(404).send('User of this token no longer exists in database');
+      return;
+    }
+
+    MovieModel.find({ userId: result._id }, (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
   });
 });
 
 app.post('/movies', (req, res) => {
-  const body = req.body;
-  const movie = new MovieModel(body);
+  const token = req.header('token');
+  if (!token) {
+    res.status(401).send('Token is missing!');
+    return;
+  }
 
-  movie.save((err, savedMovie) => {
+  const username = jwt.decode(token, jwtSecret);
+  console.log(username);
+
+  UserModel.findOne({ username: username }, function(err, result) {
     if (err) {
-      res.send(err);
-    } else {
-      res.send(savedMovie);
+      res
+        .status(500)
+        .send('Reading from database went wrong... (please send help)');
+      console.log('Could not read from db');
+      return;
     }
+    if (!result) {
+      res.status(404).send('User of this token no longer exists in database');
+      console.log('Could not find token user');
+      return;
+    }
+
+    const body = req.body;
+    body.userId = result._id;
+    const movie = new MovieModel(body);
+
+    console.log(movie);
+
+    movie.save((err, savedMovie) => {
+      if (err) {
+        res.send(err);
+        console.log('Could not save movie');
+      } else {
+        res.send(savedMovie);
+      }
+    });
   });
 });
 
@@ -75,14 +128,6 @@ app.delete('/movies/:id', (req, res) => {
   }
 });
 
-app.get('/users/:id/movies', (req, res) => {
-  const token = req.header('Authorization');
-  if (!token) {
-    res.status(401).send('Token is missing!');
-    return;
-  }
-});
-
 app.post('/users', (req, res) => {
   let input = req.body;
 
@@ -98,7 +143,6 @@ app.post('/users', (req, res) => {
       return;
     }
     if (result) {
-      console.log(result);
       res.status(401).send('Username is already taken');
       return;
     }
@@ -117,12 +161,15 @@ app.post('/users', (req, res) => {
           res.status(400).send(saveErr);
           return;
         }
-        res.status(201).send('User successfully created');
+
+        const token = jwt.encode(user.username, jwtSecret);
+        res.status(201).send(token);
       });
     });
   });
 });
 
+// Not really safe, just here for debugging
 app.get('/users', (req, res) => {
   UserModel.find((err, result) => {
     if (err) {
@@ -157,12 +204,7 @@ app.post('/authenticate', (req, res) => {
       return;
     }
 
-    const token = jwt.encode(
-      {
-        username,
-      },
-      jwtSecret
-    );
+    const token = jwt.encode(username, jwtSecret);
 
     res.status(201).send(token);
   });

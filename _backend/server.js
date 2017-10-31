@@ -8,7 +8,6 @@ const bcrypt = require('bcryptjs');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const app = express();
-const router = express.Router();
 
 const jwtSecret = 'aiosdjoasdjoaisjd12930u1203j';
 const serverPort = 1234;
@@ -23,14 +22,14 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
 });
 
 const movieSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  year: { type: Number, required: true, min: 1800 },
-  description: { type: String, required: true },
+  title: {type: String, required: true},
+  year: {type: Number, required: true, min: 1800},
+  description: {type: String, required: true},
 });
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, unique: true, required: true },
-  password: { type: String, minlength: MIN_PASSWORD_LENGTH, required: true },
+  username: {type: String, unique: true, required: true},
+  password: {type: String, minlength: MIN_PASSWORD_LENGTH, required: true},
   privateMovies: [movieSchema],
 });
 userSchema.plugin(uniqueValidator);
@@ -62,9 +61,9 @@ app.post('/movies', (req, res) => {
 });
 
 app.delete('/movies/:id', (req, res) => {
-  const id = req.param('id');
+  const id = req.params['id'];
   if (id) {
-    MovieModel.remove({ _id: id }, err => {
+    MovieModel.remove({_id: id}, err => {
       if (err) {
         res.send(err);
       } else {
@@ -123,27 +122,37 @@ app.post('/authenticate', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  UserModel.findOne({ username: username })
-    .then(user => {
-      if (!bcrypt.compareSync(password, user.passwordHash)) {
-        res.status(401).send('wrong password');
-      } else {
-        // generate token
-        const token = jwt.encode(
-          {
-            username,
-          },
-          jwtSecret
-        );
+  if(sendResponseIfInputInvalid(req.body)) {
+    return;
+  }
 
-        // send token
-        res.send(token);
-      }
-    })
-    .catch(err => {
-      return res.status(401).send('No user by that username.');
-    });
+  UserModel.findOne({'username': username}, function(err, result) {
+    if (err) {
+      res.status(500).send('Could not read users from database');
+      return;
+    }
+    if (!result) {
+      res.status(401).send('No user by that username.');
+      return;
+    }
+
+    const passwordMatches = bcrypt.compareSync(password, result.password);
+    if (!passwordMatches) {
+      res.status(401).send('wrong password');
+      return;
+    }
+
+    const token = jwt.encode(
+        {
+          username,
+        },
+        jwtSecret,
+    );
+
+    res.status(201).send({token: token});
+  });
 });
+
 
 app.listen(serverPort, () => console.log(`Listening on port: ${serverPort}`));
 
@@ -176,3 +185,12 @@ function sendResponseIfInputInvalid(user, res) {
 
   return false;
 }
+
+/*function isNullOrEmpty(items) {
+  for (let obj in items) {
+    if (obj === null || obj === undefined || obj === '') {
+      return true;
+    }
+  }
+  return false;
+}*/

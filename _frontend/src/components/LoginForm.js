@@ -68,7 +68,7 @@ class LoginForm extends Component {
                 type="password"
                 required
               />
-              <button>Login</button>
+              <button>Create User</button>
             </form>
           </div>
         </div>
@@ -85,22 +85,36 @@ class LoginForm extends Component {
     });
   }
 
+  // FIXME this code does not currently make sense
+  /*
+    This needs to be implemented:
+    - Actually get username and password.
+    - Url should point to authenticate endpoint
+    - Dont set token if authentication failed
+   */
   handleLoginSubmit(event) {
-    const url = '';
-    const body = JSON.stringify();
+    const body = {
+      username: this.state.loginUsername,
+      password: this.state.loginPassword
+    };
+    const url = 'http://localhost:1234/authenticate/';
 
-    fetch(url, {
+    const response = fetch(url, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-    })
-      .then(res => res.text())
-      .then(token => (localStorage.token = token));
+    }).then(res => res.text());
+    //.then(token => (localStorage.token = token));
+    console.log(response);
+    event.preventDefault();
+
   }
 
-  handleCreateUserSubmit(event) {}
+  handleCreateUserSubmit(event) {
+
+  }
 }
 
 export default LoginForm;

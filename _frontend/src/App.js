@@ -10,7 +10,7 @@ class App extends Component {
     super();
     this.state = {
       movies: [],
-      restUrl: 'http://localhost:1234/movies',
+      restUrl: 'http://localhost:1234/movies/',
     };
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.submitMovie = this.submitMovie.bind(this);
@@ -46,7 +46,7 @@ class App extends Component {
   }
 
   onDeleteClick(uniqueId, index) {
-    fetch(`http://localhost:1234/movies/${uniqueId}`, {
+    fetch(`${this.state.restUrl + uniqueId}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -65,7 +65,7 @@ class App extends Component {
   }
 
   submitMovie(movie) {
-    fetch('http://localhost:1234/movies', {
+    fetch(this.state.restUrl, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -83,6 +83,7 @@ class App extends Component {
   }
 
   isUserLoggedIn() {
+    // FIXME this needs to actually check if token is valid.
     return localStorage.token !== undefined;
   }
 

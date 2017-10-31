@@ -22,14 +22,14 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
 });
 
 const movieSchema = new mongoose.Schema({
-  title: {type: String, required: true},
-  year: {type: Number, required: true, min: 1800},
-  description: {type: String, required: true},
+  title: { type: String, required: true },
+  year: { type: Number, required: true, min: 1800 },
+  description: { type: String, required: true },
 });
 
 const userSchema = new mongoose.Schema({
-  username: {type: String, unique: true, required: true},
-  password: {type: String, minlength: MIN_PASSWORD_LENGTH, required: true},
+  username: { type: String, unique: true, required: true },
+  password: { type: String, minlength: MIN_PASSWORD_LENGTH, required: true },
   privateMovies: [movieSchema],
 });
 userSchema.plugin(uniqueValidator);
@@ -63,7 +63,7 @@ app.post('/movies', (req, res) => {
 app.delete('/movies/:id', (req, res) => {
   const id = req.params['id'];
   if (id) {
-    MovieModel.remove({_id: id}, err => {
+    MovieModel.remove({ _id: id }, err => {
       if (err) {
         res.send(err);
       } else {
@@ -122,11 +122,11 @@ app.post('/authenticate', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  if(sendResponseIfInputInvalid(req.body)) {
+  if (sendResponseIfInputInvalid(req.body, res)) {
     return;
   }
 
-  UserModel.findOne({'username': username}, function(err, result) {
+  UserModel.findOne({ username: username }, function(err, result) {
     if (err) {
       res.status(500).send('Could not read users from database');
       return;
@@ -143,16 +143,15 @@ app.post('/authenticate', (req, res) => {
     }
 
     const token = jwt.encode(
-        {
-          username,
-        },
-        jwtSecret,
+      {
+        username,
+      },
+      jwtSecret
     );
 
-    res.status(201).send({token: token});
+    res.status(201).send(token);
   });
 });
-
 
 app.listen(serverPort, () => console.log(`Listening on port: ${serverPort}`));
 

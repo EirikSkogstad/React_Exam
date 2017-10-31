@@ -63,11 +63,11 @@ class MovieForm extends Component {
     );
   }
 
-  handleInputChange(event) {
-    let value = event.target.value;
-    const name = event.target.name;
+  handleInputChange(e) {
+    let value = e.target.value;
+    const name = e.target.name;
 
-    if (event.target.name === 'year') {
+    if (e.target.name === 'year') {
       value = parseInt(value, 10);
     }
     this.setState({
@@ -75,7 +75,7 @@ class MovieForm extends Component {
     });
   }
 
-  handleSubmit(event) {
+  handleSubmit(e) {
     if (this.isFormFilled()) {
       const movie = {
         title: this.state.title,
@@ -88,7 +88,7 @@ class MovieForm extends Component {
     }
 
     this.resetForm();
-    event.preventDefault();
+    e.preventDefault();
   }
 
   isFormFilled() {

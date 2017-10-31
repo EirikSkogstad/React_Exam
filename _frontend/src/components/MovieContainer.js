@@ -70,8 +70,8 @@ class MovieContainer extends Component {
     });
   }
 
-  onFilterChange(event) {
-    this.setState({ movieFilter: event.target.value });
+  onFilterChange(e) {
+    this.setState({ movieFilter: e.target.value });
     this.renderMovies();
   }
 }

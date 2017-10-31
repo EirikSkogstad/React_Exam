@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import './login_form.css';
 
 class LoginForm extends Component {
-  constructor() {
-    super();
+  constructor(submitHandler) {
+    super(submitHandler);
     this.state = {
       loginUsername: '',
       loginPassword: '',
       createUsername: '',
       createPassword: '',
+      createPasswordVerify: '',
     };
 
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
@@ -68,6 +69,16 @@ class LoginForm extends Component {
                 type="password"
                 required
               />
+              <br />
+              <label htmlFor="createPasswordVerify">VerifyPassword:</label>
+              <input
+                name="createPasswordVerify"
+                onChange={this.handleInputChange}
+                value={this.state.createPasswordVerify}
+                id="createPasswordVerifyInput"
+                type="password"
+                required
+              />
               <button>Create User</button>
             </form>
           </div>
@@ -76,9 +87,9 @@ class LoginForm extends Component {
     );
   }
 
-  handleInputChange(event) {
-    let value = event.target.value;
-    const name = event.target.name;
+  handleInputChange(e) {
+    let value = e.target.value;
+    const name = e.target.name;
 
     this.setState({
       [name]: value,
@@ -92,29 +103,41 @@ class LoginForm extends Component {
     - Url should point to authenticate endpoint
     - Dont set token if authentication failed
    */
-  handleLoginSubmit(event) {
+  async handleLoginSubmit(e) {
+    e.preventDefault();
     const body = {
       username: this.state.loginUsername,
-      password: this.state.loginPassword
+      password: this.state.loginPassword,
     };
     const url = 'http://localhost:1234/authenticate/';
 
-    const response = fetch(url, {
-      method: 'post',
+    const res = await fetch(url, {
+      method: 'POST',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-    }).then(res => res.text());
-    //.then(token => (localStorage.token = token));
-    console.log(response);
-    event.preventDefault();
+    });
 
+    if (!res.ok) {
+      const error = await res.text();
+      this.handleError(error);
+      return;
+    }
+
+    const token = await res.text();
+    console.log('got token', token);
+
+    localStorage.setItem('token', token);
+    this.props.submitHandler();
   }
 
-  handleCreateUserSubmit(event) {
-
+  handleError(message) {
+    alert(message);
   }
+
+  handleCreateUserSubmit(e) {}
 }
 
 export default LoginForm;

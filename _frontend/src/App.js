@@ -11,9 +11,13 @@ class App extends Component {
     this.state = {
       movies: [],
       restUrl: 'http://localhost:1234/movies/',
+      isUserLoggedIn: false,
     };
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.submitMovie = this.submitMovie.bind(this);
+
+    this.updateLoggedInState = this.updateLoggedInState.bind(this);
+    this.updateLoggedInState();
   }
 
   componentWillMount() {
@@ -25,7 +29,7 @@ class App extends Component {
   }
 
   render() {
-    if (this.isUserLoggedIn()) {
+    if (this.state.isUserLoggedIn) {
       return (
         <div className="app-container">
           <TitleContainer />
@@ -41,7 +45,7 @@ class App extends Component {
         </div>
       );
     } else {
-      return <LoginForm />;
+      return <LoginForm submitHandler={this.updateLoggedInState} />;
     }
   }
 
@@ -82,9 +86,12 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
-  isUserLoggedIn() {
-    // FIXME this needs to actually check if token is valid.
-    return localStorage.token !== undefined;
+  updateLoggedInState() {
+    if (localStorage.token !== undefined) {
+      this.setState({ isUserLoggedIn: true });
+    } else {
+      this.setState({ isUserLoggedIn: false });
+    }
   }
 
   addToArray(movie) {

@@ -123,3 +123,17 @@ tilbyr samme data som du gjør. Et eksempel er Instagram, hvor det finnes mange 
  i, ettersom det gjør generelt API/serveren mer skalerbart. Mangel på state gjør det også lettere å hvis en server eller API 
  f.eks må startes på nytt.
  
+### Hva er hensikten med REpresentational State Transfer (REST)? Hva er noen fordeler og ulemper med å implementere nivå 2 og 3 av REST i Richardson Maturity Model? 
+- Hensikten med REST er å ha en måte å overføre data over nett på en måte som ikke er avhengig av state, eller et
+spesifikt programmeringspråk. REST fungerer på ulike "nivåer". 
+
+Fordelen med nivå 2 er at mindre forvirrende URL strukturer, sammenligned med nivå 1. Dette er fordi nivå 2 skiller 
+ut "handlinger"(CRUD) fra URL'en, og implementerer dette med HTTP verb isteden. Dermed slipper man f.eks
+/users/:id/delete og kan heller implementere deete med DELETE forespørsel mot /user/:id
+
+En fordel med nivå 3 er ovenfor nivå 2 har med "kobling" å gjøre. Nivå 3 senker kobling ved å sende med linker til ulike 
+ressurer sammen med dataen man får fra spørringer. Dette gjør at færre URL'er trenger å hardkodes hos klienten. 
+Dette gjør at client applikasjoner mindre sårbare til endringer i API'et.
+
+Nedsidene med nivå 3 har mest med tid og kompleksitet å gjøre. Ofte så vil det være kjappere for både klient applikasjoner 
+og API'et å gå for nivå 2, enn å sette inn ekstra tid på å håndtere "lenkesystemet" som nivå 3 krever.

@@ -3,3 +3,15 @@
   text-align: center;
   padding: 2em;
 }
+
+.user-info-container {
+  display: flex;
+  flex-flow: row-reverse;
+  align-items: center;
+  justify-content: center;
+  background: rgba(137, 220, 218, 0.5);
+}
+
+.user-info-container p {
+  margin: 0.3em;
+}

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './title_container.css';
 
 class TitleContainer extends Component {
-  constructor() {
-    super();
+  constructor(passedState) {
+    super(passedState);
     this.state = {
       animals: [
         'cats',

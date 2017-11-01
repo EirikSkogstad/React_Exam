@@ -12,10 +12,11 @@ class App extends Component {
       movies: [],
       moviesUrl: 'http://localhost:1234/movies/',
       isUserLoggedIn: false,
+      username: ''
     };
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.submitMovie = this.submitMovie.bind(this);
-
+    this.logoutHandler = this.logoutHandler.bind(this);
     this.updateLoggedInState = this.updateLoggedInState.bind(this);
   }
 
@@ -49,6 +50,7 @@ class App extends Component {
     if (this.state.isUserLoggedIn) {
       return (
         <div className="app-container">
+          {this.renderLoggedInInfo()}
           <TitleContainer />
           <div className="container">
             <div className="row">
@@ -64,6 +66,15 @@ class App extends Component {
     } else {
       return <LoginForm submitHandler={this.updateLoggedInState} />;
     }
+  }
+
+  renderLoggedInInfo() {
+    return (
+        <div className="user-info-container">
+          <button onClick={this.logoutHandler}>Logout</button>
+          <p>Username: {this.state.username}</p>
+        </div>
+    )
   }
 
   onDeleteClick(uniqueId, index) {
@@ -111,6 +122,15 @@ class App extends Component {
       this.setState({ isUserLoggedIn: false });
     }
     this.fetchMovies();
+  }
+
+  logoutHandler() {
+    localStorage.removeItem('token');
+
+    this.setState({
+      username: '',
+      isUserLoggedIn: false,
+    });
   }
 
   addToArray(movie) {

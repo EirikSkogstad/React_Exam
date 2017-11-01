@@ -49,14 +49,24 @@ I <code>package.json</code> puttet jeg script for dette(<code>format</code>), so
 
 
 #### URL og HTTP verb:
-De fleste HTTP verbene fungerer på URL'en "serverpath"/movies og returnerer JSON som data. <br>
+De fleste HTTP verbene fungerer på URL'en "serverpath"/movies og returnerer JSON som data. 
+Unntaket her er URL'ene som returnerer feilkoder:  <br/>
+Flere av URL'ene har blitt oppdatert til å støtte et system med brukere og innlogged, og 
+krever dermed nå at et JSON web token sendes med i forespørsler. 
+
 GET forespørsler på /movies returnerer alle filmene. Her vurderte jeg å ha muligheten til å sende
 GET forespørsel mot /movies/:id, men valgte å ikke implementere dette, siden applikasjonen foreløpig 
 ikke har bruk for dette.
 
-POST forespørsler går også mot /movies, og her er dataen naturligvis send i HTTP forespørslens "body". <br>
+POST forespørsler for å lage nye filmer, går mot /movies. Her er dataen sent i HTTP forespørslens "body". <br/>
 DELETE er den eneste forspørserlen hvor id må spesifiseres. Dette gjøres ved å sende forespørsel til /movies/:id
 slik at node serveren / API'et vet hvilken film som skal slettes.
+
+
+POST /users brukes når nye brukere skal opprettes. Her er det lite hensiktsmessig at klient sender med id, ettersom<br/>
+dette er API'et/Databasens ansvar.<br/>
+POST /authenticate brukes til innlogging. Denne URL'en returnerer et JSON web token hvis alt av kriterier matcher.
+f.eks eksisterer brukernavn, er passord riktig osv.
 
 #### Oppsett av listen
 Angående listen i applikasjonen, så valgte jeg å endre litt på hvordan den var bygget opp og ser ut.
@@ -106,3 +116,10 @@ tilbyr samme data som du gjør. Et eksempel er Instagram, hvor det finnes mange 
  
  Generelt så kan et API være en god ide hvis du produserer dataen, men ikke er like avhengig av å bruke den selv.
  Værtjenester slik som Yr.no er et godt eksempel på dette.
+ 
+ 
+### Hva er noen fordeler og ulemper ved å sende et token (som JSON Web Token) via en HTTP-header (som Authorization) kontra å bruke en Cookie?
+ - JSON webtokens gjør at man ikke trenger å holde state i form av Cookies på serveren/API'et. Minst mulig state er en god ting
+ i, ettersom det gjør generelt API/serveren mer skalerbart. Mangel på state gjør det også lettere å hvis en server eller API 
+ f.eks må startes på nytt.
+ 

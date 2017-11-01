@@ -18,9 +18,9 @@ Applikajsonen er kun testet med Android, og jeg kan dermed ikke garantere at den
 - Pass på Android emulator er installert og at stegene i 
 [React-Native](https://facebook.github.io/react-native/releases/0.23/docs/android-setup.html) guiden er fulgt.
 - Start opp Android emulatoren.
-- Åpne terminalen og naviger til NativeMovieApp mappen.
-- Kjør så <code>yarn start</code> eller <code>npm start</code>
-- <code>react-native run-android</code>
+- Naviger til NativeMovieApp mappen.
+- Kjør så yarn start<code>react-native run-android</code>
+- Deretter kjør <code>yarn start</code> eller <code>npm start</code> in en annen terminal.
 
 
 ### Forklaring av ulike valg:

@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import './movie_form.css';
+import {
+  Button,
+  Text,
+  View,
+  TextInput
+} from 'react-native';
 
 class MovieForm extends Component {
   constructor(submitHandler) {
     super(submitHandler);
     this.state = {
-      maxYear: new Date().getFullYear(),
-      minYear: 1800,
+      maxYear: new Date().getFullYear().toString(),
+      minYear: 1800 + '',
       title: '',
-      year: new Date().getFullYear(),
+      year: new Date().getFullYear().toString(),
       description: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -17,26 +22,24 @@ class MovieForm extends Component {
 
   render() {
     return (
-      <div className="col-xs-12 col-lg-4">
-        <div className="movie-form-wrapper">
-          <h2 className="header-underline">New Movie:</h2>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="titleInput">
-              Title:
-              <input
-                onChange={this.handleInputChange}
+          <View style={{padding: 10}}>
+            <Text>New Movie:</Text>
+            <Text>Title:</Text>
+              <TextInput
+                onChangeText={e => this.setState({title: e})}
                 value={this.state.title}
+                placeholder='title'
                 type="text"
                 name="title"
                 id="titleInput"
                 required
               />
-            </label>
-            <label htmlFor="yearInput">
-              Year:
-              <input
-                onChange={this.handleInputChange}
+            <Text >Year:</Text>
+              <TextInput
+                  editable={true}
+                onChangeText={e => this.setState({year: e})}
                 value={this.state.year}
+                placeholder='year'
                 type="number"
                 name="year"
                 min={this.state.minYear}
@@ -44,22 +47,19 @@ class MovieForm extends Component {
                 id="yearInput"
                 required
               />
-            </label>
-            <label htmlFor="descriptionInput">
-              Description:
-              <textarea
-                onChange={this.handleInputChange}
+            <Text >Description:</Text>
+              <TextInput
+                  editable={true}
+                onChangeText={e => this.setState({description: e})}
                 value={this.state.description}
+                placeholder='description'
                 type="textbox"
                 name="description"
                 id="descriptionInput"
                 required
               />
-            </label>
-            <button>Submit</button>
-          </form>
-        </div>
-      </div>
+        <Button title='Submit' onPress={this.handleSubmit}/>
+    </View>
     );
   }
 
@@ -75,7 +75,7 @@ class MovieForm extends Component {
     });
   }
 
-  handleSubmit(e) {
+  handleSubmit() {
     if (this.isFormFilled()) {
       const movie = {
         title: this.state.title,
@@ -88,27 +88,24 @@ class MovieForm extends Component {
     }
 
     this.resetForm();
-    e.preventDefault();
   }
 
   isFormFilled() {
     if (this.state.title === '') {
       return false;
     }
-    if (this.state.year === 0) {
+    if (this.state.year === '') {
       return false;
     }
     return this.state.description !== '';
   }
 
   resetForm() {
-    this.setState(prevState => {
-      return {
+    this.setState({
         title: '',
-        year: prevState.maxYear,
+        year: new Date().getFullYear().toString(),
         description: '',
-      };
-    });
+      });
   }
 }
 

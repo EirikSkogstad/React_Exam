@@ -31,6 +31,11 @@ class MovieContainer extends Component {
   renderMovies() {
     const movieFilter = this.state.movieFilter;
     let matchingMovies = this.props.movies;
+    const containerStyle = {
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#F5FCFF'
+    };
     if (movieFilter !== '') {
       matchingMovies = this.filterMovies(movieFilter);
     }
@@ -45,7 +50,7 @@ class MovieContainer extends Component {
 
     return matchingMovies.map((movie, key) => {
       return (
-        <View key={key} >
+        <View style={containerStyle} key={key}>
           <View >
             <Text>{movie.title}</Text>
             <Text>{movie.year}</Text>

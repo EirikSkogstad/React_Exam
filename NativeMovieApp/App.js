@@ -12,6 +12,7 @@ import {
   View
 } from 'react-native';
 import MovieContainer from './MovieContainer';
+import MovieForm from './MovieForm';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -62,6 +63,7 @@ export default class App extends Component<{}> {
     return (
       <View style={styles.container}>
         <MovieContainer movies={this.state.movies} deleteHandler={this.onDeleteClick}/>
+        <MovieForm submitHandler={this.submitMovie}/>
       </View>
     );
   }
@@ -91,7 +93,7 @@ export default class App extends Component<{}> {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        token: localStorage.token,
+        token: this.state.token,
       },
       body: JSON.stringify({
         title: movie.title,
@@ -101,17 +103,16 @@ export default class App extends Component<{}> {
     })
     .then(res => res.json())
     .then(json => this.addToArray(json)) // Recently added movie needs to be added this way, so that _id exists in this.state.movies
-        .catch(err => console.log(err));
+  }
+
+  addToArray(movie) {
+    let newArray = this.state.movies.slice();
+    newArray.push(movie);
+    this.setState({ movies: newArray });
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   welcome: {
     fontSize: 20,
     textAlign: 'center',

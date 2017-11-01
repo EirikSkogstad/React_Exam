@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './login_form.css';
 
 class LoginForm extends Component {
-  constructor(submitHandler) {
-    super(submitHandler);
+  constructor(submitHandler, setUsernameHandler) {
+    super(submitHandler, setUsernameHandler);
     this.state = {
       loginUsername: '',
       loginPassword: '',
@@ -103,6 +103,7 @@ class LoginForm extends Component {
       password: this.state.loginPassword,
     };
     const url = 'http://localhost:1234/authenticate/';
+    this.props.setUsernameHandler(this.state.loginUsername);
     this.postAndSetToken(url, body);
   }
 
@@ -119,6 +120,7 @@ class LoginForm extends Component {
 
     const url = 'http://localhost:1234/users/';
 
+    this.props.setUsernameHandler(this.state.createUsername);
     this.postAndSetToken(url, body);
   }
 
@@ -139,8 +141,6 @@ class LoginForm extends Component {
     }
 
     const token = await res.text();
-    console.log('got token', token);
-
     localStorage.setItem('token', token);
 
     this.resetState();

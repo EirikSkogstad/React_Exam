@@ -12,12 +12,13 @@ class App extends Component {
       movies: [],
       moviesUrl: 'http://localhost:1234/movies/',
       isUserLoggedIn: false,
-      username: ''
+      username: '',
     };
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.submitMovie = this.submitMovie.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
     this.updateLoggedInState = this.updateLoggedInState.bind(this);
+    this.setUsername = this.setUsername.bind(this);
   }
 
   async componentWillMount() {
@@ -64,17 +65,22 @@ class App extends Component {
         </div>
       );
     } else {
-      return <LoginForm submitHandler={this.updateLoggedInState} />;
+      return (
+        <LoginForm
+          setUsernameHandler={this.setUsername}
+          submitHandler={this.updateLoggedInState}
+        />
+      );
     }
   }
 
   renderLoggedInInfo() {
     return (
-        <div className="user-info-container">
-          <button onClick={this.logoutHandler}>Logout</button>
-          <p>Username: {this.state.username}</p>
-        </div>
-    )
+      <div className="user-info-container">
+        <button onClick={this.logoutHandler}>Logout</button>
+        <p>Username: {this.state.username}</p>
+      </div>
+    );
   }
 
   onDeleteClick(uniqueId, index) {
@@ -130,6 +136,16 @@ class App extends Component {
     this.setState({
       username: '',
       isUserLoggedIn: false,
+    });
+  }
+
+  setUsername(newUsername) {
+    if (newUsername === null || newUsername === undefined) {
+      alert('Cannot set username to empty value!');
+      return;
+    }
+    this.setState({
+      username: newUsername,
     });
   }
 

@@ -13,6 +13,15 @@ Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli 
 - Åpne to terminal vinduer og naviger til både _backend og _frontend mappene.
 - Kjør så <code>yarn install</code> eller <code>npm install</code>, i begge mappene.
 - Deretter kjør <code>yarn start</code> eller <code>npm start</code>, i begge mappene.
+#### Native app:
+Applikajsonen er kun testet med Android, og jeg kan dermed ikke garantere at den vil fungere 100% på IOS.
+- Pass på Android emulator er installert og at stegene i 
+[React-Native](https://facebook.github.io/react-native/releases/0.23/docs/android-setup.html) guiden er fulgt.
+- Start opp Android emulatoren.
+- Åpne terminalen og naviger til NativeMovieApp mappen.
+- Kjør så <code>yarn start</code> eller <code>npm start</code>
+- <code>react-native run-android</code>
+
 
 ### Forklaring av ulike valg:
 #### Oppsett:
@@ -50,7 +59,7 @@ slik at node serveren / API'et vet hvilken film som skal slettes.
 
 #### Oppsett av listen
 Angående listen i applikasjonen, så valgte jeg å endre litt på hvordan den var bygget opp og ser ut.
-En vanlig <code>ul</code> tag med <code>li</code> hadde kanskje vært teknisk og brukervennlig bedre, 
+En vanlig <code>ul</code> tag med <code>li</code> hadde kanskje vært teknisk- og brukervennlig-bedre, 
 enn måten jeg bygde det på.
 Grunnen til at jeg lagde listen med <code>div</code> elementer, var fordi jeg ønsket å 
 få litt mer erfaring med Bootstrap, og samtidig å gjøre siden mer "responsiv".

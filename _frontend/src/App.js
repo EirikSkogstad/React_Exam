@@ -10,7 +10,8 @@ class App extends Component {
     super();
     this.state = {
       movies: [],
-      moviesUrl: 'http://backend:1234/movies/',
+      backendUrl: 'http://backend:1234',
+      moviesUrl: `${this.state.backendUrl}/movies/`,
       isUserLoggedIn: false,
       username: '',
     };
@@ -67,6 +68,7 @@ class App extends Component {
     } else {
       return (
         <LoginForm
+          backendUrl={this.state.backendUrl}
           setUsernameHandler={this.setUsername}
           submitHandler={this.updateLoggedInState}
         />

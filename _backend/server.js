@@ -17,7 +17,7 @@ const MIN_PASSWORD_LENGTH = 4;
 
 app.use(bodyParser.json());
 app.use(cors());
-mongoose.connect(`mongodb://localhost/${dbName}`, {
+mongoose.connect(`mongodb://db/${dbName}`, {
   useMongoClient: true,
 });
 

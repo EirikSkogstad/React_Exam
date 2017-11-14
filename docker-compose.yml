@@ -1,0 +1,12 @@
+version: '3'
+services:
+  backend:
+    build: _backend/
+    ports:
+     - "1234:1234"
+  frontend:
+    build: _frontend/
+    ports:
+     - "3000:3000"
+  db:
+    image: "mongo:3.0"

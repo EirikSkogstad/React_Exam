@@ -102,7 +102,7 @@ class LoginForm extends Component {
       username: this.state.loginUsername,
       password: this.state.loginPassword,
     };
-    const url = 'http://localhost:1234/authenticate/';
+    const url = 'http://backend:1234/authenticate/';
     this.props.setUsernameHandler(this.state.loginUsername);
     this.postAndSetToken(url, body);
   }
@@ -118,7 +118,7 @@ class LoginForm extends Component {
       password: this.state.createPassword,
     };
 
-    const url = 'http://localhost:1234/users/';
+    const url = 'http://backend:1234/users/';
 
     this.props.setUsernameHandler(this.state.createUsername);
     this.postAndSetToken(url, body);

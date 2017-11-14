@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:8-alpine
 WORKDIR /usr/src/movie_server
 COPY package.json .
 

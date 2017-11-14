@@ -7,12 +7,22 @@ Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli 
 
 ### Skjermbilde av applikasjonen:
 ![alt screenshot](https://bytebucket.org/eSkogstad/web_api_innlevering01/raw/a46dc2626ab89c671469dedc8aa9fe6b11c09da0/screenshot.jpg?token=4e332c811989938ddd6af89778c13988a8345c3e)
+![alt app-screenshot](https://bytebucket.org/eSkogstad/web_api_innlevering01/raw/14f43ef17020985d619c26468abd7d5028ed261f/app-screenshot.png?token=c0af0b38fb03316ef8001e9e638e065b286fb00e)
 
 ### Hvordan starte applikasjonen:
 - Pass på at mongodb kjører og at node er install. I tilegg trengs enten npm eller yarn.
 - Åpne to terminal vinduer og naviger til både _backend og _frontend mappene.
 - Kjør så <code>yarn install</code> eller <code>npm install</code>, i begge mappene.
 - Deretter kjør <code>yarn start</code> eller <code>npm start</code>, i begge mappene.
+#### Native app:
+Applikajsonen er kun testet med Android, og jeg kan dermed ikke garantere at den vil fungere 100% på IOS.
+- Pass på Android emulator er installert og at stegene i 
+[React-Native](https://facebook.github.io/react-native/releases/0.23/docs/android-setup.html) guiden er fulgt.
+- Start opp Android emulatoren.
+- Naviger til NativeMovieApp mappen.
+- Kjør så yarn start<code>react-native run-android</code>
+- Deretter kjør <code>yarn start</code> eller <code>npm start</code> in en annen terminal.
+
 
 ### Forklaring av ulike valg:
 #### Oppsett:
@@ -39,18 +49,28 @@ I <code>package.json</code> puttet jeg script for dette(<code>format</code>), so
 
 
 #### URL og HTTP verb:
-De fleste HTTP verbene fungerer på URL'en "serverpath"/movies og returnerer JSON som data. <br>
+De fleste HTTP verbene fungerer på URL'en "serverpath"/movies og returnerer JSON som data. 
+Unntaket her er URL'ene som returnerer feilkoder:  <br/>
+Flere av URL'ene har blitt oppdatert til å støtte et system med brukere og innlogged, og 
+krever dermed nå at et JSON web token sendes med i forespørsler. 
+
 GET forespørsler på /movies returnerer alle filmene. Her vurderte jeg å ha muligheten til å sende
 GET forespørsel mot /movies/:id, men valgte å ikke implementere dette, siden applikasjonen foreløpig 
 ikke har bruk for dette.
 
-POST forespørsler går også mot /movies, og her er dataen naturligvis send i HTTP forespørslens "body". <br>
+POST forespørsler for å lage nye filmer, går mot /movies. Her er dataen sent i HTTP forespørslens "body". <br/>
 DELETE er den eneste forspørserlen hvor id må spesifiseres. Dette gjøres ved å sende forespørsel til /movies/:id
 slik at node serveren / API'et vet hvilken film som skal slettes.
 
+
+POST /users brukes når nye brukere skal opprettes. Her er det lite hensiktsmessig at klient sender med id, ettersom<br/>
+dette er API'et/Databasens ansvar.<br/>
+POST /authenticate brukes til innlogging. Denne URL'en returnerer et JSON web token hvis alt av kriterier matcher.
+f.eks eksisterer brukernavn, er passord riktig osv.
+
 #### Oppsett av listen
 Angående listen i applikasjonen, så valgte jeg å endre litt på hvordan den var bygget opp og ser ut.
-En vanlig <code>ul</code> tag med <code>li</code> hadde kanskje vært teknisk og brukervennlig bedre, 
+En vanlig <code>ul</code> tag med <code>li</code> hadde kanskje vært teknisk- og brukervennlig-bedre, 
 enn måten jeg bygde det på.
 Grunnen til at jeg lagde listen med <code>div</code> elementer, var fordi jeg ønsket å 
 få litt mer erfaring med Bootstrap, og samtidig å gjøre siden mer "responsiv".
@@ -96,3 +116,24 @@ tilbyr samme data som du gjør. Et eksempel er Instagram, hvor det finnes mange 
  
  Generelt så kan et API være en god ide hvis du produserer dataen, men ikke er like avhengig av å bruke den selv.
  Værtjenester slik som Yr.no er et godt eksempel på dette.
+ 
+ 
+### Hva er noen fordeler og ulemper ved å sende et token (som JSON Web Token) via en HTTP-header (som Authorization) kontra å bruke en Cookie?
+ - JSON webtokens gjør at man ikke trenger å holde state i form av Cookies på serveren/API'et. Minst mulig state er en god ting
+ i, ettersom det gjør generelt API/serveren mer skalerbart. Mangel på state gjør det også lettere å hvis en server eller API 
+ f.eks må startes på nytt.
+ 
+### Hva er hensikten med REpresentational State Transfer (REST)? Hva er noen fordeler og ulemper med å implementere nivå 2 og 3 av REST i Richardson Maturity Model? 
+- Hensikten med REST er å ha en måte å overføre data over nett på en måte som ikke er avhengig av state, eller et
+spesifikt programmeringspråk. REST fungerer på ulike "nivåer". 
+
+Fordelen med nivå 2 er at mindre forvirrende URL strukturer, sammenligned med nivå 1. Dette er fordi nivå 2 skiller 
+ut "handlinger"(CRUD) fra URL'en, og implementerer dette med HTTP verb isteden. Dermed slipper man f.eks
+/users/:id/delete og kan heller implementere deete med DELETE forespørsel mot /user/:id
+
+En fordel med nivå 3 er ovenfor nivå 2 har med "kobling" å gjøre. Nivå 3 senker kobling ved å sende med linker til ulike 
+ressurer sammen med dataen man får fra spørringer. Dette gjør at færre URL'er trenger å hardkodes hos klienten. 
+Dette gjør at client applikasjoner mindre sårbare til endringer i API'et.
+
+Nedsidene med nivå 3 har mest med tid og kompleksitet å gjøre. Ofte så vil det være kjappere for både klient applikasjoner 
+og API'et å gå for nivå 2, enn å sette inn ekstra tid på å håndtere "lenkesystemet" som nivå 3 krever.

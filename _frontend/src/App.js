@@ -3,45 +3,88 @@ import './App.css';
 import MovieContainer from './components/MovieContainer';
 import MovieForm from './components/MovieForm';
 import TitleContainer from './components/TitleContainer';
+import LoginForm from './components/LoginForm';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       movies: [],
-      restUrl: 'http://localhost:1234/movies',
+      moviesUrl: 'http://localhost:1234/movies/',
+      isUserLoggedIn: false,
+      username: '',
     };
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.submitMovie = this.submitMovie.bind(this);
+    this.logoutHandler = this.logoutHandler.bind(this);
+    this.updateLoggedInState = this.updateLoggedInState.bind(this);
+    this.setUsername = this.setUsername.bind(this);
   }
 
-  componentWillMount() {
-    fetch(this.state.restUrl)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ movies: data });
+  async componentWillMount() {
+    await this.updateLoggedInState();
+    await this.fetchMovies();
+  }
+
+  async fetchMovies() {
+    if (this.state.isUserLoggedIn) {
+      const res = await fetch(this.state.moviesUrl, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          token: localStorage.token,
+        },
       });
+
+      if (!res.ok) {
+        const error = await res.text();
+        alert(error);
+        return;
+      }
+
+      const movies = await res.json();
+      this.setState({ movies: movies });
+    }
   }
 
   render() {
-    return (
-      <div className="app-container">
-        <TitleContainer />
-        <div className="container">
-          <div className="row">
-            <MovieForm submitHandler={this.submitMovie} />
-            <MovieContainer
-              movies={this.state.movies}
-              deleteHandler={this.onDeleteClick}
-            />
+    if (this.state.isUserLoggedIn) {
+      return (
+        <div className="app-container">
+          {this.renderLoggedInInfo()}
+          <TitleContainer />
+          <div className="container">
+            <div className="row">
+              <MovieForm submitHandler={this.submitMovie} />
+              <MovieContainer
+                movies={this.state.movies}
+                deleteHandler={this.onDeleteClick}
+              />
+            </div>
           </div>
         </div>
+      );
+    } else {
+      return (
+        <LoginForm
+          setUsernameHandler={this.setUsername}
+          submitHandler={this.updateLoggedInState}
+        />
+      );
+    }
+  }
+
+  renderLoggedInInfo() {
+    return (
+      <div className="user-info-container">
+        <button onClick={this.logoutHandler}>Logout</button>
+        <p>Username: {this.state.username}</p>
       </div>
     );
   }
 
   onDeleteClick(uniqueId, index) {
-    fetch(`http://localhost:1234/movies/${uniqueId}`, {
+    fetch(`${this.state.moviesUrl + uniqueId}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -60,11 +103,12 @@ class App extends Component {
   }
 
   submitMovie(movie) {
-    fetch('http://localhost:1234/movies', {
+    fetch(this.state.moviesUrl, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        token: localStorage.token,
       },
       body: JSON.stringify({
         title: movie.title,
@@ -75,6 +119,34 @@ class App extends Component {
       .then(res => res.json())
       .then(json => this.addToArray(json)) // Recently added movie needs to be added this way, so that _id exists in this.state.movies
       .catch(err => console.log(err));
+  }
+
+  updateLoggedInState() {
+    if (localStorage.token !== undefined) {
+      this.setState({ isUserLoggedIn: true });
+    } else {
+      this.setState({ isUserLoggedIn: false });
+    }
+    this.fetchMovies();
+  }
+
+  logoutHandler() {
+    localStorage.removeItem('token');
+
+    this.setState({
+      username: '',
+      isUserLoggedIn: false,
+    });
+  }
+
+  setUsername(newUsername) {
+    if (newUsername === null || newUsername === undefined) {
+      alert('Cannot set username to empty value!');
+      return;
+    }
+    this.setState({
+      username: newUsername,
+    });
   }
 
   addToArray(movie) {

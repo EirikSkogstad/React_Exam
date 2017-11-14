@@ -1,0 +1,9 @@
+.form-container {
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+  padding: 2em;
+  margin-top: 2em;
+
+  background: rgba(220, 220, 220, 0.6);
+}

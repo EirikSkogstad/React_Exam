@@ -10,7 +10,7 @@ class App extends Component {
     super();
     this.state = {
       movies: [],
-      backendUrl: 'http://backend:1234',
+      backendUrl: 'http://localhost:1234',
       moviesUrl: `${this.state.backendUrl}/movies/`,
       isUserLoggedIn: false,
       username: '',

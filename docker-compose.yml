@@ -10,7 +10,7 @@ services:
       - db
     environment:
       - DOCKER_DB=db
-  frontend:
-    build: _frontend/
-    ports:
-     - "3000:3000"
+#  frontend:
+#    build: _frontend/
+#    ports:
+#     - "3000:3000"

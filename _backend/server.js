@@ -11,7 +11,7 @@ const app = express();
 
 const jwtSecret = 'aiosdjoasdjoaisjd12930u1203j';
 const serverPort = 1234;
-const host = process.env.DOCKER_DB || "localhost";
+const host = process.env.DOCKER_DB || 'localhost';
 const dbName = 'movies';
 
 const MIN_PASSWORD_LENGTH = 4;
@@ -136,41 +136,29 @@ app.post('/users', (req, res) => {
     return;
   }
 
-  UserModel.findOne({ username: input.username }, function(err, result) {
-    if (err) {
-      res
-        .status(500)
-        .send('Reading from database went wrong... (please send help)');
-      return;
-    }
-    if (result) {
-      res.status(401).send('Username is already taken');
+  bcrypt.hash(input.password, 10, function(hashErr, hash) {
+    if (hashErr) {
+      res.send(hashErr);
       return;
     }
 
-    bcrypt.hash(input.password, 10, function(hashErr, hash) {
-      if (hashErr) {
-        res.send(hashErr);
+    input.password = hash;
+
+    const user = new UserModel(input);
+    user.save((saveErr, savedUser) => {
+      if (saveErr) {
+        res.status(400).send(saveErr);
         return;
       }
 
-      input.password = hash;
-
-      const user = new UserModel(input);
-      user.save((saveErr, savedUser) => {
-        if (saveErr) {
-          res.status(400).send(saveErr);
-          return;
-        }
-
-        const token = jwt.encode(user.username, jwtSecret);
-        res.status(201).send(token);
-      });
+      const token = jwt.encode(user.username, jwtSecret);
+      res.status(201).send(token);
     });
   });
 });
 
-// Not really safe, just here for debugging
+// TODO remove me:
+// I'm just here for debugging =)
 app.get('/users', (req, res) => {
   UserModel.find((err, result) => {
     if (err) {
@@ -240,5 +228,18 @@ function sendResponseIfInputInvalid(user, res) {
     return true;
   }
 
-  return false;
+  UserModel.findOne({ username: user.username }, function(err, result) {
+    if (err) {
+      res
+        .status(500)
+        .send('Reading from database went wrong... (please send help)');
+      return true;
+    }
+    if (result) {
+      res.status(401).send('Username is already taken');
+      return true;
+    }
+
+    return false;
+  });
 }

@@ -11,7 +11,6 @@ class App extends Component {
     this.state = {
       movies: [],
       backendUrl: 'http://localhost:1234',
-      moviesUrl: `${this.state.backendUrl}/movies/`,
       isUserLoggedIn: false,
       username: '',
     };
@@ -29,7 +28,7 @@ class App extends Component {
 
   async fetchMovies() {
     if (this.state.isUserLoggedIn) {
-      const res = await fetch(this.state.moviesUrl, {
+      const res = await fetch(this.state.backendUrl + /movies/, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -86,7 +85,7 @@ class App extends Component {
   }
 
   onDeleteClick(uniqueId, index) {
-    fetch(`${this.state.moviesUrl + uniqueId}`, {
+    fetch(`${this.state.backendUrl}/movies/${uniqueId}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -105,7 +104,7 @@ class App extends Component {
   }
 
   submitMovie(movie) {
-    fetch(this.state.moviesUrl, {
+    fetch(`${this.state.backendUrl}/movies/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

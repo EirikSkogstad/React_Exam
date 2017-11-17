@@ -40,12 +40,11 @@ const MovieModel = mongoose.model('Movie', movieSchema);
 const UserModel = mongoose.model('User', userSchema);
 
 app.get('/movies', (req, res) => {
-  const token = req.header('token');
-  if (!token) {
-    res.status(401).send('Token is missing!');
+  if(sendErrorIfTokenIsNotPresent(req, res)) {
     return;
   }
-  console.log(token);
+
+  const token = req.header('token');
   const username = jwt.decode(token, jwtSecret);
 
   console.log(username);
@@ -74,14 +73,11 @@ app.get('/movies', (req, res) => {
 });
 
 app.post('/movies', (req, res) => {
-  const token = req.header('token');
-  if (!token) {
-    res.status(401).send('Token is missing!');
+  if(sendErrorIfTokenIsNotPresent(req, res)) {
     return;
   }
-
+  const token = req.header('token');
   const username = jwt.decode(token, jwtSecret);
-  console.log(username);
 
   UserModel.findOne({ username: username }, function(err, result) {
     if (err) {
@@ -157,17 +153,6 @@ app.post('/users', (req, res) => {
   });
 });
 
-// TODO remove me:
-// I'm just here for debugging =)
-app.get('/users', (req, res) => {
-  UserModel.find((err, result) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(result);
-    }
-  });
-});
 
 app.post('/authenticate', (req, res) => {
   const username = req.body.username;
@@ -242,4 +227,13 @@ function sendResponseIfInputInvalid(user, res) {
 
     return false;
   });
+}
+
+function sendErrorIfTokenIsNotPresent(req, res) {
+  if (req.header('token') === null || req.header('token') === '') {
+    res.status(401).send('Token is missing!');
+    return true;
+  }
+
+  return false;
 }

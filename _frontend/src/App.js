@@ -13,7 +13,7 @@ class App extends Component {
       backendUrl: 'http://localhost:1234',
       isUserLoggedIn: false,
     };
-    this.onDeleteClick = this.onDeleteClick.bind(this);
+    this.deleteHandler = this.deleteHandler.bind(this);
     this.submitMovie = this.submitMovie.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
     this.updateLoggedInState = this.updateLoggedInState.bind(this);
@@ -78,7 +78,7 @@ class App extends Component {
               <MovieForm submitHandler={this.submitMovie} />
               <MovieContainer
                 movies={this.state.movies}
-                deleteHandler={this.onDeleteClick}
+                deleteHandler={this.deleteHandler}
               />
             </div>
           </div>
@@ -104,23 +104,29 @@ class App extends Component {
     );
   }
 
-  onDeleteClick(uniqueId, index) {
-    fetch(`${this.state.backendUrl}/movies/${uniqueId}`, {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
+  deleteHandler(uniqueId, index) {
+    this.isApiOnline().then( isOnline => {
+      if(!isOnline) {
+        alert('Cannot contact JSON api, therefore cannot delete.');
+        return;
+      }
+      fetch(`${this.state.backendUrl}/movies/${uniqueId}`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
       .then(res => res.json())
       .catch(err => console.log(err));
 
-    // Update local array
-    let newMovies = this.state.movies.slice();
-    newMovies.splice(index, 1);
-    this.setState({
-      movies: newMovies,
-    });
+      // Update local array
+      let newMovies = this.state.movies.slice();
+      newMovies.splice(index, 1);
+      this.setState({
+        movies: newMovies,
+      });
+    })
   }
 
   async submitMovie(movie) {

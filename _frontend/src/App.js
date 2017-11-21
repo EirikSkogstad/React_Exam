@@ -12,7 +12,6 @@ class App extends Component {
       movies: [],
       backendUrl: 'http://localhost:1234',
       isUserLoggedIn: false,
-      username: '',
     };
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.submitMovie = this.submitMovie.bind(this);
@@ -100,7 +99,7 @@ class App extends Component {
     return (
       <div className="user-info-container">
         <button onClick={this.logoutHandler}>Logout</button>
-        <p>Username: {this.state.username}</p>
+        <p>Username: {localStorage.username}</p>
       </div>
     );
   }
@@ -147,10 +146,6 @@ class App extends Component {
 
     const json = await res.json();
     this.addToArray(json);
-
-    // .then(res => res.json())
-    // .then(json => this.addToArray(json)) // Recently added movie needs to be added this way, so that _id exists in this.state.movies
-    // .catch(err => console.log(err));
   }
 
   updateLoggedInState() {
@@ -165,8 +160,8 @@ class App extends Component {
   logoutHandler() {
     localStorage.removeItem('token');
 
+    localStorage.removeItem('username');
     this.setState({
-      username: '',
       isUserLoggedIn: false,
     });
   }
@@ -176,9 +171,7 @@ class App extends Component {
       alert('Cannot set username to empty value!');
       return;
     }
-    this.setState({
-      username: newUsername,
-    });
+    localStorage.username = newUsername;
   }
 
   addToArray(movie) {

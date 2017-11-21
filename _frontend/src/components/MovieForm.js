@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './movie_form.css';
 
 class MovieForm extends Component {
-  constructor(submitHandler) {
-    super(submitHandler);
+  constructor(isApiOnline, backendUrl, submitHandler) {
+    super(isApiOnline, backendUrl, submitHandler);
     this.state = {
       maxYear: new Date().getFullYear(),
       minYear: 1800,
@@ -17,49 +17,49 @@ class MovieForm extends Component {
 
   render() {
     return (
-      <div className="col-xs-12 col-lg-4">
-        <div className="movie-form-wrapper">
-          <h2 className="header-underline">New Movie:</h2>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="titleInput">
-              Title:
-              <input
-                onChange={this.handleInputChange}
-                value={this.state.title}
-                type="text"
-                name="title"
-                id="titleInput"
-                required
-              />
-            </label>
-            <label htmlFor="yearInput">
-              Year:
-              <input
-                onChange={this.handleInputChange}
-                value={this.state.year}
-                type="number"
-                name="year"
-                min={this.state.minYear}
-                max={this.state.maxYear}
-                id="yearInput"
-                required
-              />
-            </label>
-            <label htmlFor="descriptionInput">
-              Description:
-              <textarea
-                onChange={this.handleInputChange}
-                value={this.state.description}
-                type="textbox"
-                name="description"
-                id="descriptionInput"
-                required
-              />
-            </label>
-            <button>Submit</button>
-          </form>
+        <div className="col-xs-12 col-lg-4">
+          <div className="movie-form-wrapper">
+            <h2 className="header-underline">New Movie:</h2>
+            <form onSubmit={this.handleSubmit}>
+              <label htmlFor="titleInput">
+                Title:
+                <input
+                    onChange={this.handleInputChange}
+                    value={this.state.title}
+                    type="text"
+                    name="title"
+                    id="titleInput"
+                    required
+                />
+              </label>
+              <label htmlFor="yearInput">
+                Year:
+                <input
+                    onChange={this.handleInputChange}
+                    value={this.state.year}
+                    type="number"
+                    name="year"
+                    min={this.state.minYear}
+                    max={this.state.maxYear}
+                    id="yearInput"
+                    required
+                />
+              </label>
+              <label htmlFor="descriptionInput">
+                Description:
+                <textarea
+                    onChange={this.handleInputChange}
+                    value={this.state.description}
+                    type="textbox"
+                    name="description"
+                    id="descriptionInput"
+                    required
+                />
+              </label>
+              <button>Submit</button>
+            </form>
+          </div>
         </div>
-      </div>
     );
   }
 
@@ -76,19 +76,27 @@ class MovieForm extends Component {
   }
 
   handleSubmit(e) {
-    if (this.isFormFilled()) {
-      const movie = {
-        title: this.state.title,
-        year: this.state.year,
-        description: this.state.description,
-      };
-      this.props.submitHandler(movie);
-    } else {
-      alert('Form is not filled properly out!');
-    }
-
-    this.resetForm();
     e.preventDefault();
+
+    this.props.isApiOnline(this.props.backendUrl).then(isApiOnline => {
+      if (!isApiOnline) {
+        alert('JSON api is not available, cannot create new movie');
+        return;
+      }
+
+      if (this.isFormFilled()) {
+        const movie = {
+          title: this.state.title,
+          year: this.state.year,
+          description: this.state.description,
+        };
+        this.props.submitHandler(movie);
+      } else {
+        alert('Form is not filled properly out!');
+      }
+
+      this.resetForm();
+    });
   }
 
   isFormFilled() {

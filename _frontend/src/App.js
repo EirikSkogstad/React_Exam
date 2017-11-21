@@ -21,17 +21,20 @@ class App extends Component {
   }
 
   displayErrorIfApiNotOnline() {
-    this.isApiOnline().then(isOnline => {
+    this.isApiOnline(this.state.backendUrl).then(isOnline => {
       if (!isOnline) {
         alert('Could not reach JSON api.');
       }
     });
   }
 
-  async isApiOnline() {
+  async isApiOnline(apiUrl) {
     try {
-      const result = await fetch(this.state.backendUrl);
-      return result !== undefined;
+      const result = await fetch(apiUrl);
+      if(result === undefined) {
+        return false;
+      }
+      return true;
     } catch (e) {
       return false;
     }
@@ -39,8 +42,8 @@ class App extends Component {
 
   async componentWillMount() {
     this.displayErrorIfApiNotOnline();
-    const apiIsOnline = await this.isApiOnline();
-    if(apiIsOnline) {
+    const apiIsOnline = await this.isApiOnline(this.state.backendUrl);
+    if (apiIsOnline) {
       await this.updateLoggedInState();
       await this.fetchMovies();
     }
@@ -75,7 +78,10 @@ class App extends Component {
           <TitleContainer />
           <div className="container">
             <div className="row">
-              <MovieForm submitHandler={this.submitMovie} />
+              <MovieForm
+                  isApiOnline={this.isApiOnline}
+                  backendUrl={this.state.backendUrl}
+                  submitHandler={this.submitMovie} />
               <MovieContainer
                 movies={this.state.movies}
                 deleteHandler={this.deleteHandler}
@@ -87,6 +93,7 @@ class App extends Component {
     } else {
       return (
         <LoginForm
+          isApiOnline={this.isApiOnline}
           backendUrl={this.state.backendUrl}
           setUsernameHandler={this.setUsername}
           submitHandler={this.updateLoggedInState}
@@ -105,8 +112,8 @@ class App extends Component {
   }
 
   deleteHandler(uniqueId, index) {
-    this.isApiOnline().then( isOnline => {
-      if(!isOnline) {
+    this.isApiOnline(this.state.backendUrl).then(isOnline => {
+      if (!isOnline) {
         alert('Cannot contact JSON api, therefore cannot delete.');
         return;
       }
@@ -117,8 +124,8 @@ class App extends Component {
           'Content-Type': 'application/json',
         },
       })
-      .then(res => res.json())
-      .catch(err => console.log(err));
+        .then(res => res.json())
+        .catch(err => console.log(err));
 
       // Update local array
       let newMovies = this.state.movies.slice();
@@ -126,7 +133,7 @@ class App extends Component {
       this.setState({
         movies: newMovies,
       });
-    })
+    });
   }
 
   async submitMovie(movie) {

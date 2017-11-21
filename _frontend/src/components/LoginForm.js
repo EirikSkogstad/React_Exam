@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './login_form.css';
 
 class LoginForm extends Component {
-  constructor(submitHandler, setUsernameHandler, backendUrl) {
-    super(submitHandler, setUsernameHandler, backendUrl);
+  constructor(isApiOnline, submitHandler, setUsernameHandler, backendUrl) {
+    super(isApiOnline, submitHandler, setUsernameHandler, backendUrl);
     this.state = {
       loginUsername: '',
       loginPassword: '',
@@ -96,32 +96,44 @@ class LoginForm extends Component {
     });
   }
 
-  async handleLoginSubmit(e) {
+  handleLoginSubmit(e) {
     e.preventDefault();
-    const body = {
-      username: this.state.loginUsername,
-      password: this.state.loginPassword,
-    };
-    const url = `${this.props.backendUrl}/authenticate/`;
-    this.props.setUsernameHandler(this.state.loginUsername);
-    this.postAndSetToken(url, body);
+    this.props.isApiOnline(this.props.backendUrl).then(isApiOnline => {
+      if (!isApiOnline) {
+        alert('JSON api is not available, cannot create user');
+        return;
+      }
+      const body = {
+        username: this.state.loginUsername,
+        password: this.state.loginPassword,
+      };
+      const url = `${this.props.backendUrl}/authenticate/`;
+      this.props.setUsernameHandler(this.state.loginUsername);
+      this.postAndSetToken(url, body);
+    });
   }
 
   handleCreateUserSubmit(e) {
     e.preventDefault();
-    if (this.state.createPassword !== this.state.createPasswordVerify) {
-      LoginForm.displayError('Passwords do not match!');
-      return;
-    }
-    const body = {
-      username: this.state.createUsername,
-      password: this.state.createPassword,
-    };
+    this.props.isApiOnline(this.props.backendUrl).then(isApiOnline => {
+      if (!isApiOnline) {
+        alert('JSON api is not available, cannot create user');
+        return;
+      }
+      if (this.state.createPassword !== this.state.createPasswordVerify) {
+        LoginForm.displayError('Passwords do not match!');
+        return;
+      }
+      const body = {
+        username: this.state.createUsername,
+        password: this.state.createPassword,
+      };
 
-    const url = `${this.props.backendUrl}/users/`;
+      const url = `${this.props.backendUrl}/users/`;
 
-    this.props.setUsernameHandler(this.state.createUsername);
-    this.postAndSetToken(url, body);
+      this.props.setUsernameHandler(this.state.createUsername);
+      this.postAndSetToken(url, body);
+    });
   }
 
   async postAndSetToken(url, body) {

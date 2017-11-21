@@ -31,7 +31,7 @@ class App extends Component {
   async isApiOnline(apiUrl) {
     try {
       const result = await fetch(apiUrl);
-      if(result === undefined) {
+      if (result === undefined) {
         return false;
       }
       return true;
@@ -79,9 +79,10 @@ class App extends Component {
           <div className="container">
             <div className="row">
               <MovieForm
-                  isApiOnline={this.isApiOnline}
-                  backendUrl={this.state.backendUrl}
-                  submitHandler={this.submitMovie} />
+                isApiOnline={this.isApiOnline}
+                backendUrl={this.state.backendUrl}
+                submitHandler={this.submitMovie}
+              />
               <MovieContainer
                 movies={this.state.movies}
                 deleteHandler={this.deleteHandler}

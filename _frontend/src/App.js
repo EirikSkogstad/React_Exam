@@ -21,9 +21,30 @@ class App extends Component {
     this.setUsername = this.setUsername.bind(this);
   }
 
+  displayErrorIfApiNotOnline() {
+    this.isApiOnline().then(isOnline => {
+      if (!isOnline) {
+        alert('Could not reach JSON api.');
+      }
+    });
+  }
+
+  async isApiOnline() {
+    try {
+      const result = await fetch(this.state.backendUrl);
+      return result !== undefined;
+    } catch (e) {
+      return false;
+    }
+  }
+
   async componentWillMount() {
-    await this.updateLoggedInState();
-    await this.fetchMovies();
+    this.displayErrorIfApiNotOnline();
+    const apiIsOnline = await this.isApiOnline();
+    if(apiIsOnline) {
+      await this.updateLoggedInState();
+      await this.fetchMovies();
+    }
   }
 
   async fetchMovies() {
@@ -103,8 +124,8 @@ class App extends Component {
     });
   }
 
-  submitMovie(movie) {
-    fetch(`${this.state.backendUrl}/movies/`, {
+  async submitMovie(movie) {
+    const res = await fetch(`${this.state.backendUrl}/movies/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -116,10 +137,20 @@ class App extends Component {
         year: movie.year,
         description: movie.description,
       }),
-    })
-      .then(res => res.json())
-      .then(json => this.addToArray(json)) // Recently added movie needs to be added this way, so that _id exists in this.state.movies
-      .catch(err => console.log(err));
+    });
+
+    if (!res.ok) {
+      const error = await res.text();
+      alert(error);
+      return;
+    }
+
+    const json = res.json();
+    this.addToArray(json);
+
+    // .then(res => res.json())
+    // .then(json => this.addToArray(json)) // Recently added movie needs to be added this way, so that _id exists in this.state.movies
+    // .catch(err => console.log(err));
   }
 
   updateLoggedInState() {

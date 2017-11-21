@@ -39,6 +39,10 @@ userSchema.plugin(uniqueValidator);
 const MovieModel = mongoose.model('Movie', movieSchema);
 const UserModel = mongoose.model('User', userSchema);
 
+app.get('/', (req, res) => {
+  res.status(200).send();
+});
+
 app.get('/movies', (req, res) => {
   if (sendErrorIfTokenIsNotPresent(req, res)) {
     return;
@@ -78,8 +82,13 @@ app.post('/movies', (req, res) => {
   }
   const token = req.header('token');
   const username = jwt.decode(token, jwtSecret);
+  const body = req.body;
 
-  UserModel.findOne({ username: username }, function(err, result) {
+  // if (sendErrorIfMovieIsInvalid(req.body, res)) {
+  //   return;
+  // }
+
+  MovieModel.findOne({ title: body.title }, function(err, result) {
     if (err) {
       res
         .status(500)
@@ -88,24 +97,35 @@ app.post('/movies', (req, res) => {
       return;
     }
     if (!result) {
-      res.status(404).send('User of this token no longer exists in database');
-      console.log('Could not find token user');
+      res.status(400).send('Movie already exists, duplicates are not allowed');
       return;
     }
 
-    const body = req.body;
-    body.userId = result._id;
-    const movie = new MovieModel(body);
-
-    console.log(movie);
-
-    movie.save((err, savedMovie) => {
+    UserModel.findOne({ username: username }, function(err, result) {
       if (err) {
-        res.send(err);
-        console.log('Could not save movie');
-      } else {
-        res.send(savedMovie);
+        res
+          .status(500)
+          .send('Reading from database went wrong... (please send help)');
+        console.log('Could not read from db');
+        return;
       }
+      if (!result) {
+        res.status(404).send('User of this token no longer exists in database');
+        console.log('Could not find token user');
+        return;
+      }
+
+      body.userId = result._id;
+      console.log(movie);
+
+      movie.save((err, savedMovie) => {
+        if (err) {
+          res.send(err);
+          console.log('Could not save movie');
+        } else {
+          res.send(savedMovie);
+        }
+      });
     });
   });
 });
@@ -224,6 +244,20 @@ function sendResponseIfInputInvalid(user, res) {
     res.status(400).send('User cannot be created with existing movies.');
     return true;
   }
+  return false;
+}
+
+function sendErrorIfMovieIsInvalid(movie, res) {
+  if (
+    movie.title === undefined ||
+    movie.title === undefined ||
+    movie.date === undefined
+  ) {
+    res.status(400).send('Cannot create movie with missing fields');
+    return true;
+  }
+
+  return false;
 }
 
 function sendErrorIfTokenIsNotPresent(req, res) {

@@ -96,7 +96,7 @@ app.post('/movies', (req, res) => {
       console.log('Could not read from db');
       return;
     }
-    if (!result) {
+    if (result) {
       res.status(400).send('Movie already exists, duplicates are not allowed');
       return;
     }
@@ -116,14 +116,14 @@ app.post('/movies', (req, res) => {
       }
 
       body.userId = result._id;
-      console.log(movie);
+      movie = new MovieModel(body);
 
-      movie.save((err, savedMovie) => {
+      movie.save((err, movie) => {
         if (err) {
           res.send(err);
           console.log('Could not save movie');
         } else {
-          res.send(savedMovie);
+          res.status(201).send(movie);
         }
       });
     });

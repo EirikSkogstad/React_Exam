@@ -145,7 +145,7 @@ class App extends Component {
       return;
     }
 
-    const json = res.json();
+    const json = await res.json();
     this.addToArray(json);
 
     // .then(res => res.json())

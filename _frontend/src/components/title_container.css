@@ -2,16 +2,19 @@
   background: rgba(220, 220, 220, 0.6);
   text-align: center;
   padding: 2em;
+  margin-bottom: 1em;
 }
 
 .user-info-container {
   display: flex;
   flex-flow: row-reverse;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   background: rgba(137, 220, 218, 0.5);
 }
 
 .user-info-container p {
   margin: 0.3em;
+  padding: 0.3em;
+  font-weight: bold;
 }

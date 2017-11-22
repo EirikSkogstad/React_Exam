@@ -22,16 +22,16 @@ mongoose.connect(`mongodb://${host}/${dbName}`, {
 });
 
 const movieSchema = new mongoose.Schema({
-  title: {type: String, required: true, unique: true},
-  year: {type: Number, required: true, min: 1800},
-  description: {type: String, required: true},
-  isPublic: {type: Boolean, required: true},
-  userId: {type: String, required: true},
+  title: { type: String, required: true, unique: true },
+  year: { type: Number, required: true, min: 1800 },
+  description: { type: String, required: true },
+  isPublic: { type: Boolean, required: true },
+  userId: { type: String, required: true },
 });
 
 const userSchema = new mongoose.Schema({
-  username: {type: String, unique: true, required: true},
-  password: {type: String, minlength: MIN_PASSWORD_LENGTH, required: true},
+  username: { type: String, unique: true, required: true },
+  password: { type: String, minlength: MIN_PASSWORD_LENGTH, required: true },
 });
 
 const MovieModel = mongoose.model('Movie', movieSchema);
@@ -50,12 +50,13 @@ app.get('/movies', (req, res) => {
   const username = jwt.decode(token, jwtSecret);
 
   console.log(username);
-  UserModel.findOne({username: username}, function(err, result) {
+  UserModel.findOne({ username: username }, function(err, result) {
     if (err) {
       console.log(err);
 
-      res.status(500).
-          send('Reading from database went wrong... (please send help)');
+      res
+        .status(500)
+        .send('Reading from database went wrong... (please send help)');
       return;
     }
     if (!result) {
@@ -63,7 +64,7 @@ app.get('/movies', (req, res) => {
       return;
     }
 
-    MovieModel.find({userId: result._id}, (err, result) => {
+    MovieModel.find({ userId: result._id }, (err, result) => {
       if (err) {
         res.send(err);
       } else {
@@ -81,10 +82,11 @@ app.post('/movies', (req, res) => {
   const username = jwt.decode(token, jwtSecret);
   const body = req.body;
 
-  MovieModel.findOne({title: body.title}, function(err, result) {
+  MovieModel.findOne({ title: body.title }, function(err, result) {
     if (err) {
-      res.status(500).
-          send('Reading from database went wrong... (please send help)');
+      res
+        .status(500)
+        .send('Reading from database went wrong... (please send help)');
       console.log('Could not read from db');
       return;
     }
@@ -93,10 +95,11 @@ app.post('/movies', (req, res) => {
       return;
     }
 
-    UserModel.findOne({username: username}, function(err, result) {
+    UserModel.findOne({ username: username }, function(err, result) {
       if (err) {
-        res.status(500).
-            send('Reading from database went wrong... (please send help)');
+        res
+          .status(500)
+          .send('Reading from database went wrong... (please send help)');
         console.log('Could not read from db');
         return;
       }
@@ -131,7 +134,6 @@ app.put('/movies/:id', (req, res) => {
   }
 
   if (id) {
-
     MovieModel.findById(id, (err, movie) => {
       if (err) {
         res.status(400).send(err);
@@ -145,7 +147,7 @@ app.put('/movies/:id', (req, res) => {
 
       console.log(movie);
       movie.save((saveErr, savedMovie) => {
-        if(saveErr) {
+        if (saveErr) {
           console.log(saveErr);
           res.status(400).send(saveErr);
 
@@ -155,8 +157,6 @@ app.put('/movies/:id', (req, res) => {
         console.log(movie);
         res.status(200).send(savedMovie);
       });
-
-
     });
   } else {
     res.status(400).send('Must contain id');
@@ -166,7 +166,7 @@ app.put('/movies/:id', (req, res) => {
 app.delete('/movies/:id', (req, res) => {
   const id = req.params['id'];
   if (id) {
-    MovieModel.remove({_id: id}, err => {
+    MovieModel.remove({ _id: id }, err => {
       if (err) {
         res.send(err);
       } else {
@@ -185,10 +185,11 @@ app.post('/users', (req, res) => {
     return;
   }
 
-  UserModel.findOne({username: body.username}, function(err, result) {
+  UserModel.findOne({ username: body.username }, function(err, result) {
     if (err) {
-      res.status(500).
-          send('Reading from database went wrong... (please send help)');
+      res
+        .status(500)
+        .send('Reading from database went wrong... (please send help)');
       return;
     }
     if (result) {
@@ -226,7 +227,7 @@ app.post('/authenticate', (req, res) => {
     return;
   }
 
-  UserModel.findOne({username: username}, function(err, result) {
+  UserModel.findOne({ username: username }, function(err, result) {
     if (err) {
       res.status(500).send('Could not read users from database');
       return;
@@ -268,8 +269,7 @@ function sendResponseIfInputInvalid(user, res) {
   }
 
   if (user.password.length < MIN_PASSWORD_LENGTH) {
-    res.status(400).
-        send(`Password must be longer than ${MIN_PASSWORD_LENGTH}`);
+    res.status(400).send(`Password must be longer than ${MIN_PASSWORD_LENGTH}`);
     return true;
   }
 
@@ -282,22 +282,24 @@ function sendResponseIfInputInvalid(user, res) {
 
 function sendErrorIfMovieIsInvalid(movie, res) {
   if (
-      movie.title === undefined ||
-      movie.year === undefined ||
-      movie.description === undefined ||
-      movie.isPublic === undefined
+    movie.title === undefined ||
+    movie.year === undefined ||
+    movie.description === undefined ||
+    movie.isPublic === undefined
   ) {
     res.status(400).send('Cannot create movie with missing fields');
     return true;
   }
 
-  if(movie._id !== undefined) {
+  if (movie._id !== undefined) {
     res.status(400).send('Cannot change _id of movie!');
     return true;
   }
 
-  if(movie.userId !== undefined) {
-    res.status(400).send('Cannot change owner/userId of movie using this method!');
+  if (movie.userId !== undefined) {
+    res
+      .status(400)
+      .send('Cannot change owner/userId of movie using this method!');
     return true;
   }
 

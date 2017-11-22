@@ -1,3 +1,18 @@
 .App {
   text-align: center;
 }
+
+button {
+  padding: 0.3em;
+  background: #add8e6;
+  border-radius: 5px;
+  border: solid black 2px;
+}
+
+button:hover {
+  box-shadow: 2px 8px 32px 5px rgba(107, 106, 107, 1);
+}
+
+button:focus {
+  box-shadow: 2px 8px 32px 5px rgba(107, 106, 107, 1);
+}

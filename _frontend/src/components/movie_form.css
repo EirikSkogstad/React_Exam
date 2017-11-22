@@ -6,6 +6,7 @@
 
   background: rgba(220, 220, 220, 0.6);
   border-radius: 5px;
+  margin-bottom: 1em;
 }
 
 .movie-form-wrapper form label {

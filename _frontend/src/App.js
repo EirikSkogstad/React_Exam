@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import MovieContainer from './components/MovieContainer';
 import MovieForm from './components/MovieForm';
@@ -14,6 +14,7 @@ class App extends Component {
       isUserLoggedIn: false,
     };
     this.deleteHandler = this.deleteHandler.bind(this);
+    this.changeMovieHandler = this.changeMovieHandler.bind(this);
     this.submitMovie = this.submitMovie.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
     this.updateLoggedInState = this.updateLoggedInState.bind(this);
@@ -66,49 +67,50 @@ class App extends Component {
       }
 
       const movies = await res.json();
-      this.setState({ movies: movies });
+      this.setState({movies: movies});
     }
   }
 
   render() {
     if (this.state.isUserLoggedIn) {
       return (
-        <div className="app-container">
-          {this.renderLoggedInInfo()}
-          <TitleContainer />
-          <div className="container">
-            <div className="row">
-              <MovieForm
-                isApiOnline={this.isApiOnline}
-                backendUrl={this.state.backendUrl}
-                submitHandler={this.submitMovie}
-              />
-              <MovieContainer
-                movies={this.state.movies}
-                deleteHandler={this.deleteHandler}
-              />
+          <div className="app-container">
+            {this.renderLoggedInInfo()}
+            <TitleContainer/>
+            <div className="container">
+              <div className="row">
+                <MovieForm
+                    isApiOnline={this.isApiOnline}
+                    backendUrl={this.state.backendUrl}
+                    submitHandler={this.submitMovie}
+                />
+                <MovieContainer
+                    movies={this.state.movies}
+                    deleteHandler={this.deleteHandler}
+                    changeMovieHandler={this.changeMovieHandler}
+                />
+              </div>
             </div>
           </div>
-        </div>
       );
     } else {
       return (
-        <LoginForm
-          isApiOnline={this.isApiOnline}
-          backendUrl={this.state.backendUrl}
-          setUsernameHandler={this.setUsername}
-          submitHandler={this.updateLoggedInState}
-        />
+          <LoginForm
+              isApiOnline={this.isApiOnline}
+              backendUrl={this.state.backendUrl}
+              setUsernameHandler={this.setUsername}
+              submitHandler={this.updateLoggedInState}
+          />
       );
     }
   }
 
   renderLoggedInInfo() {
     return (
-      <div className="user-info-container">
-        <button onClick={this.logoutHandler}>Logout</button>
-        <p>Username: {localStorage.username}</p>
-      </div>
+        <div className="user-info-container">
+          <button onClick={this.logoutHandler}>Logout</button>
+          <p>Username: {localStorage.username}</p>
+        </div>
     );
   }
 
@@ -124,9 +126,7 @@ class App extends Component {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-      })
-        .then(res => res.json())
-        .catch(err => console.log(err));
+      }).then(res => res.json()).catch(err => console.log(err));
 
       // Update local array
       let newMovies = this.state.movies.slice();
@@ -135,6 +135,45 @@ class App extends Component {
         movies: newMovies,
       });
     });
+  }
+
+  async changeMovieHandler(movie) {
+    const id = movie._id;
+
+    let newArray = this.state.movies.slice();
+    const index = newArray.findIndex(e => e._id === id);
+
+    if (index === -1) {
+      return;
+    }
+
+    let tempElement = newArray[index];
+    tempElement.isPublic = !tempElement.isPublic;
+
+    const res = await fetch(`${this.state.backendUrl}/movies/${id}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: localStorage.token,
+      },
+      body: JSON.stringify({
+        title: tempElement.title,
+        year: tempElement.year,
+        description: tempElement.description,
+        isPublic: tempElement.isPublic,
+      }),
+    });
+
+
+    if(!res.ok) {
+      const error = await res.text();
+      alert(error);
+      return;
+    }
+
+    newArray[index] = tempElement;
+    this.setState({movies: newArray});
   }
 
   async submitMovie(movie) {
@@ -164,9 +203,9 @@ class App extends Component {
 
   updateLoggedInState() {
     if (localStorage.token !== undefined) {
-      this.setState({ isUserLoggedIn: true });
+      this.setState({isUserLoggedIn: true});
     } else {
-      this.setState({ isUserLoggedIn: false });
+      this.setState({isUserLoggedIn: false});
     }
     this.fetchMovies();
   }
@@ -191,7 +230,7 @@ class App extends Component {
   addToArray(movie) {
     let newArray = this.state.movies.slice();
     newArray.push(movie);
-    this.setState({ movies: newArray });
+    this.setState({movies: newArray});
   }
 }
 

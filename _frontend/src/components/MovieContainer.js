@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './movie_container.css';
 
 class MovieContainer extends Component {
-  constructor(movies, deleteHandler) {
-    super(movies, deleteHandler);
+  constructor(movies, deleteHandler,changeMovieHandler) {
+    super(movies, deleteHandler, changeMovieHandler);
     this.state = {
       movieFilter: '',
     };
@@ -52,6 +52,15 @@ class MovieContainer extends Component {
             <h1>{movie.title}</h1>
             <h3>{movie.year}</h3>
             <p>{movie.description}</p>
+            <label htmlFor="isPublicInput">
+              Is public?
+              <input
+                id="isPublicInput"
+                type="checkbox"
+                checked={movie.isPublic}
+                onChange={ () => this.props.changeMovieHandler(movie)}
+              />
+            </label>
             <button onClick={() => this.props.deleteHandler(movie._id, key)}>
               Delete
             </button>

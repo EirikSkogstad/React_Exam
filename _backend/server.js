@@ -126,15 +126,15 @@ app.put('/movies/:id', (req, res) => {
   const id = req.params['id'];
   const body = req.body;
 
-  // TODO check that user is owner of movie
   if (sendErrorIfMovieIsInvalid(body, res)) {
     return;
   }
 
   if (id) {
+
     MovieModel.findById(id, (err, movie) => {
       if (err) {
-        res.send(err);
+        res.status(400).send(err);
         return;
       }
 
@@ -143,13 +143,16 @@ app.put('/movies/:id', (req, res) => {
       movie.description = body.description;
       movie.isPublic = body.isPublic;
 
+      console.log(movie);
       movie.save((saveErr, savedMovie) => {
         if(saveErr) {
+          console.log(saveErr);
           res.status(400).send(saveErr);
+
           return;
         }
 
-        console.log(savedMovie);
+        console.log(movie);
         res.status(200).send(savedMovie);
       });
 

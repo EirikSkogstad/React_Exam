@@ -1887,6 +1887,10 @@ mongodb@2.2.31:
     mongodb-core "2.1.15"
     readable-stream "2.2.7"
 
+mongoose-beautiful-unique-validation@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/mongoose-beautiful-unique-validation/-/mongoose-beautiful-unique-validation-7.0.0.tgz#24a7db461d0ad1d0ef2b802ed78777dc4266cc2a"
+
 mongoose-unique-validator@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/mongoose-unique-validator/-/mongoose-unique-validator-1.0.6.tgz#fab31e68c1a5ba6f5b05da8e93842db55eb0a3b1"

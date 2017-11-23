@@ -30,3 +30,7 @@
   padding: 0.5em;
   word-wrap: break-word;
 }
+
+.public-input {
+  margin: 0.5em;
+}

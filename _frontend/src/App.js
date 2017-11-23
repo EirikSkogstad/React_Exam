@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import MovieContainer from './components/MovieContainer';
+import PublicMovieContainer from './components/PublicMovieContainer';
 import MovieForm from './components/MovieForm';
 import TitleContainer from './components/TitleContainer';
 import LoginForm from './components/LoginForm';
@@ -12,7 +13,7 @@ class App extends Component {
       movies: [],
       backendUrl: 'http://localhost:1234',
       isUserLoggedIn: false,
-      displayPublicMovies: false,
+      isDisplayingPublicMovies: false,
     };
     this.deleteHandler = this.deleteHandler.bind(this);
     this.changeMovieHandler = this.changeMovieHandler.bind(this);
@@ -74,7 +75,11 @@ class App extends Component {
 
   render() {
     if (this.state.isUserLoggedIn) {
-      return this.renderMovies();
+      if (this.state.isDisplayingPublicMovies) {
+        return this.renderPublicMovies();
+      } else {
+        return this.renderMovies();
+      }
     } else {
       return this.renderLoginForm();
     }
@@ -95,10 +100,10 @@ class App extends Component {
       <button
         onClick={() =>
           this.setState({
-            displayPublicMovies: !this.state.displayPublicMovies,
+            isDisplayingPublicMovies: !this.state.isDisplayingPublicMovies,
           })}
       >
-        {this.state.displayPublicMovies
+        {this.state.isDisplayingPublicMovies
           ? 'Show private movies'
           : 'Show inspirational movies'}
       </button>
@@ -118,12 +123,23 @@ class App extends Component {
               submitHandler={this.submitMovie}
             />
             <MovieContainer
-              displayPublicMovies={this.state.displayPublicMovies}
               movies={this.state.movies}
               deleteHandler={this.deleteHandler}
               changeMovieHandler={this.changeMovieHandler}
             />
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderPublicMovies() {
+    return (
+      <div className="app-container">
+        {this.renderLoggedInInfo()}
+        <TitleContainer />
+        <div className="container">
+          <PublicMovieContainer backendUrl={this.state.backendUrl} />
         </div>
       </div>
     );

@@ -55,6 +55,7 @@ class MovieContainer extends Component {
             <label htmlFor="isPublicInput">
               Is public?
               <input
+                className="public-input"
                 id="isPublicInput"
                 type="checkbox"
                 checked={movie.isPublic}

@@ -16,7 +16,6 @@ exports.connect = httpServer => {
     });
 
     socket.on('message', data => {
-      console.log(data);
       sockets.forEach(socket => socket.send(data));
     });
   });

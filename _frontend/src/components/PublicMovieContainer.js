@@ -43,12 +43,27 @@ class PublicMovieContainer extends Component {
 
     ws.onmessage = message => {
       const movie = message.data;
-      console.log(movie);
-      let json = JSON.parse(movie);
+      let movieJson = JSON.parse(movie);
 
-      this.setState((prevState, props) => {
-        return { publicMovies: [...prevState.publicMovies, json] };
-      });
+      console.log(movieJson.title);
+      let index = this.state.publicMovies.findIndex(
+        e => e.title === movieJson.title
+      );
+
+      console.log(index);
+      if (index === -1) {
+        this.setState((prevState, props) => {
+          console.log('Adding movie');
+          return { publicMovies: [...prevState.publicMovies, movieJson] };
+        });
+      } else {
+        this.setState((prevState, props) => {
+          console.log('Removing movie');
+          const tempMovies = prevState.publicMovies;
+          tempMovies.splice(index, 1);
+          return { publicMovies: tempMovies };
+        });
+      }
     };
   }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './public_movie_container.css';
 
 class PublicMovieContainer extends Component {
   constructor(backendUrl) {
@@ -30,7 +31,16 @@ class PublicMovieContainer extends Component {
   }
 
   render() {
-    return <div className="container">{this.renderMovies()}</div>;
+    return (
+        <div className="container-fluid public-movie-wrapper">
+          <div className="public-movie-item-header">
+            <h1>Title:</h1>
+            <h1>Year:</h1>
+            <h1>Description:</h1>
+            <h1>User:</h1>
+          </div>
+      {this.renderMovies()}
+      </div>);
   }
 
   renderMovies() {
@@ -44,11 +54,12 @@ class PublicMovieContainer extends Component {
 
     return this.state.publicMovies.map((movie, key) => {
       return (
-        <div key={key} className="col-md-6 col-xs-12">
-          <div className="movie-item-wrapper">
-            <h1>{movie.title}</h1>
-            <h3>{movie.year}</h3>
-            <p>{movie.description}</p>
+        <div key={key}>
+          <div className="public-movie-item-wrapper">
+            <h4>{movie.title}</h4>
+            <h4>{movie.year}</h4>
+            <h4>{movie.description}</h4>
+            <h4>{movie.ownerUsername}</h4>
           </div>
         </div>
       );

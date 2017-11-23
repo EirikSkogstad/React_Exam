@@ -138,9 +138,7 @@ class App extends Component {
       <div className="app-container">
         {this.renderLoggedInInfo()}
         <TitleContainer />
-        <div className="container">
-          <PublicMovieContainer backendUrl={this.state.backendUrl} />
-        </div>
+        <PublicMovieContainer backendUrl={this.state.backendUrl} />
       </div>
     );
   }

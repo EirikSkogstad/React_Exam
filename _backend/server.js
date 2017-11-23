@@ -48,8 +48,8 @@ app.get('/movies', (req, res) => {
 
   const token = req.header('token');
   const username = jwt.decode(token, jwtSecret);
+  const isPublicParam = req.query['public'];
 
-  console.log(username);
   UserModel.findOne({ username: username }, function(err, result) {
     if (err) {
       console.log(err);
@@ -61,6 +61,20 @@ app.get('/movies', (req, res) => {
     }
     if (!result) {
       res.status(404).send('User of this token no longer exists in database');
+      return;
+    }
+
+    if (isPublicParam === 'true' || isPublicParam === 'false') {
+      MovieModel.find(
+        { userId: result._id, isPublic: isPublicParam },
+        (err, result) => {
+          if (err) {
+            res.send(err);
+          } else {
+            res.send(result);
+          }
+        }
+      );
       return;
     }
 
@@ -145,7 +159,6 @@ app.put('/movies/:id', (req, res) => {
       movie.description = body.description;
       movie.isPublic = body.isPublic;
 
-      console.log(movie);
       movie.save((saveErr, savedMovie) => {
         if (saveErr) {
           console.log(saveErr);
@@ -154,7 +167,6 @@ app.put('/movies/:id', (req, res) => {
           return;
         }
 
-        console.log(movie);
         res.status(200).send(savedMovie);
       });
     });
@@ -307,7 +319,8 @@ function sendErrorIfMovieIsInvalid(movie, res) {
 }
 
 function sendErrorIfTokenIsNotPresent(req, res) {
-  if (req.header('token') === null || req.header('token') === '') {
+  const token = req.header('token');
+  if (token === null || token === '' || token === undefined) {
     res.status(401).send('Token is missing!');
     return true;
   }

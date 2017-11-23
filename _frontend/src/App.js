@@ -12,6 +12,7 @@ class App extends Component {
     this.state = {
       movies: [],
       backendUrl: 'http://localhost:1234',
+      webSocket: null,
       isUserLoggedIn: false,
       isDisplayingPublicMovies: false,
     };
@@ -21,6 +22,28 @@ class App extends Component {
     this.logoutHandler = this.logoutHandler.bind(this);
     this.updateLoggedInState = this.updateLoggedInState.bind(this);
     this.setUsername = this.setUsername.bind(this);
+  }
+
+  async componentWillMount() {
+    this.displayErrorIfApiNotOnline();
+
+    const apiIsOnline = await this.isApiOnline(this.state.backendUrl);
+    if (apiIsOnline) {
+      await this.updateLoggedInState();
+      await this.fetchMovies();
+    }
+
+    this.setupWebsocket();
+  }
+
+  setupWebsocket() {
+    const wsUrl = 'ws://localhost:1234';
+    const ws = new WebSocket(wsUrl);
+    this.setState({ webSocket: ws });
+
+    ws.onopen = () => {
+      console.log('Connected!');
+    };
   }
 
   displayErrorIfApiNotOnline() {
@@ -40,15 +63,6 @@ class App extends Component {
       return true;
     } catch (e) {
       return false;
-    }
-  }
-
-  async componentWillMount() {
-    this.displayErrorIfApiNotOnline();
-    const apiIsOnline = await this.isApiOnline(this.state.backendUrl);
-    if (apiIsOnline) {
-      await this.updateLoggedInState();
-      await this.fetchMovies();
     }
   }
 
@@ -215,6 +229,7 @@ class App extends Component {
 
     newArray[index] = tempElement;
     this.setState({ movies: newArray });
+    this.state.webSocket.send(JSON.stringify(tempElement));
   }
 
   async submitMovie(movie) {

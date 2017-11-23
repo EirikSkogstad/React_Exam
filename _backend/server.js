@@ -64,16 +64,13 @@ app.get('/movies', (req, res) => {
     }
 
     if (isPublicParam === 'true' || isPublicParam === 'false') {
-      MovieModel.find(
-        { isPublic: isPublicParam },
-        (err, result) => {
-          if (err) {
-            res.send(err);
-          } else {
-            res.send(result);
-          }
+      MovieModel.find({ isPublic: isPublicParam }, (err, result) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(result);
         }
-      );
+      });
       return;
     }
 
@@ -261,10 +258,12 @@ app.post('/authenticate', (req, res) => {
   });
 });
 
-app.listen(serverPort, () => console.log(`Listening on port: ${serverPort}`));
+const server = app.listen(serverPort, () =>
+  console.log(`Listening on port: ${serverPort}`)
+);
 
 // Seperate file for handling websockets.
-//require('./sockets').connect(server);
+require('./sockets').connect(server);
 
 /**
  *

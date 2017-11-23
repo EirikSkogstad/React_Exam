@@ -28,19 +28,42 @@ class PublicMovieContainer extends Component {
 
     const movies = await res.json();
     this.setState({ publicMovies: movies });
+
+    this.setupWebsocket();
+  }
+
+  setupWebsocket() {
+    const wsUrl = 'ws://localhost:1234';
+    const ws = new WebSocket(wsUrl);
+    this.setState({ webSocket: ws });
+
+    ws.onopen = () => {
+      console.log('Connected!');
+    };
+
+    ws.onmessage = message => {
+      const movie = message.data;
+      console.log(movie);
+      let json = JSON.parse(movie);
+
+      this.setState((prevState, props) => {
+        return { publicMovies: [...prevState.publicMovies, json] };
+      });
+    };
   }
 
   render() {
     return (
-        <div className="container-fluid public-movie-wrapper">
-          <div className="public-movie-item-header">
-            <h1>Title:</h1>
-            <h1>Year:</h1>
-            <h1>Description:</h1>
-            <h1>User:</h1>
-          </div>
-      {this.renderMovies()}
-      </div>);
+      <div className="container public-movie-wrapper">
+        <div className="public-movie-item-header">
+          <h1>Title:</h1>
+          <h1>Year:</h1>
+          <h1>Description:</h1>
+          <h1>User:</h1>
+        </div>
+        {this.renderMovies()}
+      </div>
+    );
   }
 
   renderMovies() {

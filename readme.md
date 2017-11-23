@@ -137,3 +137,23 @@ Dette gjør at client applikasjoner mindre sårbare til endringer i API'et.
 
 Nedsidene med nivå 3 har mest med tid og kompleksitet å gjøre. Ofte så vil det være kjappere for både klient applikasjoner 
 og API'et å gå for nivå 2, enn å sette inn ekstra tid på å håndtere "lenkesystemet" som nivå 3 krever.
+
+### Hva er hensikten med å automatisere testing av en fullstack webapplikasjon? Hvis du måtte velge mellom å skrive unit-tester, integrasjonstester, og end-to-end-tester, hvilken type test ville du valgt å skrive for prosjektet? Hvorfor?
+
+#### Hensikten
+- Hensikten med å automatisere testing er å spare tid og få testing som er mer pålitelig. Hvis en manuelt tester en applikasjon så er det fort gjort å ikke være like grundig hver gang. I tillegg blir det fort kjedelig. Dette gjør at etterhvert så lar en være  å teste like ofte. 
+
+- En konsekvens av å ikke teste like ofte er at man ikke kan gjøre like hyppige endringer og samtidig være sikker på at en ikke introduserer bugs. 
+I tilleggg så vil automatisering av tester spare mer og mer tid jo større applikasjonen blir. Når en applikasjon blir stor nok, så vil det til slutt uansett være umulig å teste alt manuelt. Med  andre ord så sparer en både tid og gjør applikasjonen mer fri for feil. 
+
+
+#### Hvilken test ville jeg valgt:
+- Hvis jeg kun skulle skrevet et type test så ville det vært unit-tester. Fordelen med unit tester er man teste veldig små deler av systemet, som ulike funksjoner. Dette gjør at det er veldig lett å se hvor noe går feil, hvis en har mange nok tester.
+Ulempen med unit-tester vil da være at det er veldig tidskrevende å skrive tester for å dekke hele systemet.  En annen nedside er at unit-tester kun tester funksjonalitet i isolasjon, ikke hvordan de fungerer/integreres med hverandre.
+
+- End to end- og integrasjons-tester  er fine for å teste hele applikasjonen i et miljø som er så likt som mulig som produksjonsmijøet. Fordelen med dette er at det tester at de ulike funksjonalitetene i applikasjonen fungerer med hverandre.
+Nedsiden med denne typen tester er at de er mye mindre spesifikke på hvor feilen ligger. 
+
+Ettersom som ulike typer tester utfyller hverandre, så vil man ideelt sett ha mest unit tester, færre integrasjons tester og minst end to end tester.
+
+

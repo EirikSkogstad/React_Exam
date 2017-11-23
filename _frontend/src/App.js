@@ -231,6 +231,7 @@ class App extends Component {
         title: movie.title,
         year: movie.year,
         description: movie.description,
+        ownerUsername: localStorage.username,
       }),
     });
 

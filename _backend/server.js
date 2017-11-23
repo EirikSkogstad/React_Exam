@@ -26,9 +26,8 @@ const movieSchema = new mongoose.Schema({
   year: { type: Number, required: true, min: 1800 },
   description: { type: String, required: true },
   isPublic: { type: Boolean, required: true },
-  userId: { type: String, required: true },
+  ownerUsername: { type: String, required: true },
 });
-
 const userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
   password: { type: String, minlength: MIN_PASSWORD_LENGTH, required: true },
@@ -50,7 +49,7 @@ app.get('/movies', (req, res) => {
   const username = jwt.decode(token, jwtSecret);
   const isPublicParam = req.query['public'];
 
-  UserModel.findOne({ username: username }, function(err, result) {
+  UserModel.findOne({ username: username }, function(err, userResult) {
     if (err) {
       console.log(err);
 
@@ -59,14 +58,14 @@ app.get('/movies', (req, res) => {
         .send('Reading from database went wrong... (please send help)');
       return;
     }
-    if (!result) {
+    if (!userResult) {
       res.status(404).send('User of this token no longer exists in database');
       return;
     }
 
     if (isPublicParam === 'true' || isPublicParam === 'false') {
       MovieModel.find(
-        { userId: result._id, isPublic: isPublicParam },
+        { isPublic: isPublicParam },
         (err, result) => {
           if (err) {
             res.send(err);
@@ -78,7 +77,7 @@ app.get('/movies', (req, res) => {
       return;
     }
 
-    MovieModel.find({ userId: result._id }, (err, result) => {
+    MovieModel.find({ ownerUsername: userResult.username }, (err, result) => {
       if (err) {
         res.send(err);
       } else {
@@ -109,7 +108,7 @@ app.post('/movies', (req, res) => {
       return;
     }
 
-    UserModel.findOne({ username: username }, function(err, result) {
+    UserModel.findOne({ username: username }, function(err, userResult) {
       if (err) {
         res
           .status(500)
@@ -117,13 +116,14 @@ app.post('/movies', (req, res) => {
         console.log('Could not read from db');
         return;
       }
-      if (!result) {
+      if (!userResult) {
         res.status(404).send('User of this token no longer exists in database');
         console.log('Could not find token user');
         return;
       }
 
-      body.userId = result._id;
+      console.log(body);
+      body.ownerUsername = userResult.username;
       movie = new MovieModel(body);
       movie.isPublic = false;
 
@@ -263,6 +263,9 @@ app.post('/authenticate', (req, res) => {
 
 app.listen(serverPort, () => console.log(`Listening on port: ${serverPort}`));
 
+// Seperate file for handling websockets.
+//require('./sockets').connect(server);
+
 /**
  *
  * @param user
@@ -308,10 +311,10 @@ function sendErrorIfMovieIsInvalid(movie, res) {
     return true;
   }
 
-  if (movie.userId !== undefined) {
+  if (movie.ownerUsername !== undefined) {
     res
       .status(400)
-      .send('Cannot change owner/userId of movie using this method!');
+      .send('Cannot change owner/ownerUsername of movie using this method!');
     return true;
   }
 

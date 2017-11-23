@@ -10,14 +10,14 @@ const app = express();
 
 const jwtSecret = 'aiosdjoasdjoaisjd12930u1203j';
 const serverPort = 1234;
-const host = process.env.DOCKER_DB || 'localhost';
-const dbName = 'movies';
+const databaseUrl = process.env.DOCKER_DB || 'mongodb://localhost/movies';
 
 const MIN_PASSWORD_LENGTH = 4;
 
 app.use(bodyParser.json());
 app.use(cors());
-mongoose.connect(`mongodb://${host}/${dbName}`, {
+console.log('Connecting to ' + databaseUrl);
+mongoose.connect(databaseUrl, {
   useMongoClient: true,
 });
 
@@ -119,7 +119,6 @@ app.post('/movies', (req, res) => {
         return;
       }
 
-      console.log(body);
       body.ownerUsername = userResult.username;
       movie = new MovieModel(body);
       movie.isPublic = false;

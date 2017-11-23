@@ -1,16 +1,8 @@
 version: '3'
 services:
-  db:
-    image: "mongo:3.0"
   backend:
     build: _backend/
     ports:
      - "1234:1234"
-    links:
-      - db
     environment:
-      - DOCKER_DB=db
-#  frontend:
-#    build: _frontend/
-#    ports:
-#     - "3000:3000"
+      - DOCKER_DB=mongodb://movieuser:movieuser@ds261745.mlab.com:61745/a_simple_movie_database

@@ -328,3 +328,5 @@ function sendErrorIfTokenIsNotPresent(req, res) {
 
   return false;
 }
+
+module.exports = app;

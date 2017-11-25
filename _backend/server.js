@@ -253,7 +253,7 @@ app.post('/authenticate', (req, res) => {
 
     const token = jwt.encode(username, jwtSecret);
 
-    res.status(201).send(token);
+    res.status(200).send(token);
   });
 });
 

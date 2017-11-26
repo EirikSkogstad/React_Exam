@@ -14,6 +14,21 @@ Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli 
 - Åpne to terminal vinduer og naviger til både _backend og _frontend mappene.
 - Kjør så <code>yarn install</code> eller <code>npm install</code>, i begge mappene.
 - Deretter kjør <code>yarn start</code> eller <code>npm start</code>, i begge mappene.
+
+#### Starte applikasjonen med Docker:
+Docker er satt opp til å fungere med REST api'et og bruker ekstern database. Frontend/React modulen er ikke satt opp 
+med Docker, og må dermed startes manuelt.
+
+Jeg anbefaler å starte applikasjonen med Docker-Compose. 
+- Naviger til roten av prosjektet. (Samme mappe hvor Docker-compose.yml ligger)
+- `docker-compose build`
+- `docker-compose up` .
+
+Det er også mulig å starte applikasjonen uten Docker-compose, men dette krever litt mer arbeid.
+- Naviger først til _frontend
+- `docker build -t ze9ix/movies-backend .`
+- `docker run -p 1234:1234 -e DOCKER_DB=mongodb://movieuser:movieuser@ds261745.mlab.com:61745/a_simple_movie_database ze9ix/movies-backend`
+
 #### Native app:
 Applikajsonen er kun testet med Android, og jeg kan dermed ikke garantere at den vil fungere 100% på IOS.
 - Pass på Android emulator er installert og at stegene i 

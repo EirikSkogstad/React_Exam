@@ -19,24 +19,24 @@ Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli 
 Docker er satt opp til å fungere med REST api'et og bruker ekstern database. Frontend/React modulen er ikke satt opp 
 med Docker, og må dermed startes manuelt.
 
-Jeg anbefaler å starte applikasjonen med Docker-Compose. 
-- Naviger til roten av prosjektet. (Samme mappe hvor Docker-compose.yml ligger)
-- `docker-compose build`
-- `docker-compose up` .
+Jeg anbefaler å starte applikasjonen med Docker-Compose. <br/>
+- Naviger til roten av prosjektet. (Samme mappe hvor Docker-compose.yml ligger)<br/>
+- `docker-compose build`<br/>
+- `docker-compose up` .<br/>
 
 Det er også mulig å starte applikasjonen uten Docker-compose, men dette krever litt mer arbeid.
-- Naviger først til _frontend
-- `docker build -t ze9ix/movies-backend .`
-- `docker run -p 1234:1234 -e DOCKER_DB=mongodb://movieuser:movieuser@ds261745.mlab.com:61745/a_simple_movie_database ze9ix/movies-backend`
+- Naviger først til _frontend<br/>
+- `docker build -t ze9ix/movies-backend .`<br/>
+- `docker run -p 1234:1234 -e DOCKER_DB=mongodb://movieuser:movieuser@ds261745.mlab.com:61745/a_simple_movie_database ze9ix/movies-backend`<br/>
 
 #### Native app:
-Applikajsonen er kun testet med Android, og jeg kan dermed ikke garantere at den vil fungere 100% på IOS.
-- Pass på Android emulator er installert og at stegene i 
-[React-Native](https://facebook.github.io/react-native/releases/0.23/docs/android-setup.html) guiden er fulgt.
-- Start opp Android emulatoren.
-- Naviger til NativeMovieApp mappen.
-- Kjør så yarn start<code>react-native run-android</code>
-- Deretter kjør <code>yarn start</code> eller <code>npm start</code> in en annen terminal.
+Applikajsonen er kun testet med Android, og jeg kan dermed ikke garantere at den vil fungere 100% på IOS.<br/>
+- Pass på Android emulator er installert og at stegene i <br/>
+[React-Native](https://facebook.github.io/react-native/releases/0.23/docs/android-setup.html) guiden er fulgt.<br/>
+- Start opp Android emulatoren.<br/>
+- Naviger til NativeMovieApp mappen.<br/>
+- Kjør så yarn start<code>react-native run-android</code><br/>
+- Deretter kjør <code>yarn start</code> eller <code>npm start</code> in en annen terminal.<br/>
 
 
 ### Forklaring av ulike valg:

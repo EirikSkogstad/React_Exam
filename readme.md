@@ -171,4 +171,21 @@ Nedsiden med denne typen tester er at de er mye mindre spesifikke på hvor feile
 
 Ettersom som ulike typer tester utfyller hverandre, så vil man ideelt sett ha mest unit tester, færre integrasjons tester og minst end to end tester.
 
+#### Hva er fordeler og ulemper ved å bruke WebSockets? Når bør man ikke bruke dem?
+
+##### Fordeler:
+Fordelen med Websockets er at det lar serveren "kommunisere" med klienter. Dette gjør at serveren kan "pushe" ny informasjon direkte til klienten, istedenfor at klienten må konstant sjekke etter ny informasjon.
+
+Websockets er perfekt til applikasjoner hvor klienter ofte trenger ny informasjon fra serveren, på ujevne intervaller. Et godt eksempel for dette er en chat applikasjon. 
+
+En fordel med websockets er at klienten får ny informasjon så fort som mulig, uten at det båndbredde må sløses ved å konstant spørre etter ny informasjon
+
+##### Nedsider:
+En nedside med websockets er at det introduserer state på serveren. Serveren må holde oversikt over alle klienter og må 
+håndtere ny informasjon ofte. Dette vil gjøre at serveren får mer å gjøre. 
+
+Et annet negativt aspekt ved state i serveren, er at det gjør raskt mer komplisert. State gjør det vanskeligere å håndtere tilfeller hvor en server må byttes ut eller programmet må byttes ut.  
+I tillegg kan det gjøre ting som lastbalansering mer komplisert.
+
+Generelt sett så vil det være lurt å unngå Websockets med mindre du har et spesfikt behov for kontinuerlig kommunikasjon mellom klient og server.
 

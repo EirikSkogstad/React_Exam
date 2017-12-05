@@ -63,7 +63,7 @@ app.get('/movies', (req, res) => {
       return;
     }
 
-    if (isPublicParam === 'true' || isPublicParam === 'false') {
+    if (isPublicParam === 'true') {
       MovieModel.find({ isPublic: isPublicParam }, (err, result) => {
         if (err) {
           res.send(err);
@@ -261,7 +261,7 @@ const server = app.listen(serverPort, () =>
   console.log(`Listening on port: ${serverPort}`)
 );
 
-// Seperate file for handling websockets.
+// Separate file for handling Websockets.
 require('./sockets').connect(server);
 
 /**

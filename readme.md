@@ -1,5 +1,5 @@
-# Innlevering 01: "Hello world"
-For innlevering 01 valgte jeg å lage en applikasjon som lister ulike filmer. Brukeren skulle ha muligheten til å.. <br/>
+# React Eksamen/Innlevering
+For eksamens-innleveringen i React valgte jeg å lage en applikasjon som lister ulike filmer. Brukeren skulle ha muligheten til å.. <br/>
 - legge til filmer. <br/>
 - se ulike filmer som har blitt lagt til. <br/>
 - filtrere filmer som er lagt til<br/>

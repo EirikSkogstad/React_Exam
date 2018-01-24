@@ -6,8 +6,8 @@ For eksamens-innleveringen i React valgte jeg å lage en applikasjon som lister 
 Grunnen til at jeg ville ha funksjonalitet for dette, var mest at jeg ville bli komfortabel med bruk av ulike "HTTP-verb" i Express.
 
 ### Skjermbilde av applikasjonen:
-![alt screenshot](https://bytebucket.org/eSkogstad/web_api_innlevering01/raw/a46dc2626ab89c671469dedc8aa9fe6b11c09da0/screenshot.jpg?token=4e332c811989938ddd6af89778c13988a8345c3e)
-![alt app-screenshot](https://bytebucket.org/eSkogstad/web_api_innlevering01/raw/14f43ef17020985d619c26468abd7d5028ed261f/app-screenshot.png?token=c0af0b38fb03316ef8001e9e638e065b286fb00e)
+![alt screenshot](https://raw.githubusercontent.com/EirikSkogstad/React_Exam/master/screenshot.jpg)
+![alt app-screenshot](https://raw.githubusercontent.com/EirikSkogstad/React_Exam/master/app-screenshot.png)
 
 ### Hvordan starte applikasjonen:
 - Pass på at mongodb kjører og at node er install. I tilegg trengs enten npm eller yarn.
